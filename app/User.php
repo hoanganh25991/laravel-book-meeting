@@ -30,4 +30,10 @@ class User extends Authenticatable
     public function bookings(){
         return $this->belongsToMany(Booking::class);
     }
+
+    public function scopeNotInvited($query, $booking_id){
+        return $query->has('bookings', function($query) use($booking_id){
+            $query->where('id', '!=', $booking_id);
+        });
+    }
 }

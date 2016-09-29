@@ -16,7 +16,7 @@ use App\Booking;
 use App\BookingUser;
 use App\Group;
 use App\GroupUser;
-//use App\User;
+use App\User;
 
 Route::get('/', function (){
     return view('welcome');
@@ -68,13 +68,14 @@ Route::post('booking/create', function (ApiRequest $req){
 });
 
 Route::get('booking', function (){
-    $userBookings = BookingUser::with(['bookings' => function($query){
-                                $query->where('created_by', Auth::id());
-                            }])
-//                            ->where('user_id', Auth::id()) //not TRUE, only for created_by
-                            ->first();
-    !empty($userBookings) ?
-        $bookings = $userBookings->bookings :
+    $user = User::with(['bookings' => function($query){
+                    $query->where('created_by', Auth::id());
+                }])
+                ->where('id', Auth::id())
+                ->first()
+                ;
+    !empty($user) ?
+        $bookings = $user->bookings :
         $bookings = [];
 
     return view('bookings.index', compact('bookings'));
@@ -189,10 +190,19 @@ Route::post('group/verify', function (ApiRequest $req){
 
 Route::get('booking/{id}/invite', function($booking_id){
 //    dd($booking_id);
-    //load users in same group with userA
-    $groups = Group::with(['users' => function($query){
-                            $query->where('users.id', '!=', Auth::id())
-                                    ->whereDoesntHave('bookings');
+    $groups = Group::with(['users' => function($query) use($booking_id){
+//                            $query->whereDoesntHave('bookings');
+//                            $bookingsDifA = function($query)use($booking_id){
+//                                $query->where('id', '!=', $booking_id);
+//                            };
+////                            Clouser::bind($bookingsDifA, null, Group::class);
+//                            $query->where('users.id', '!=', Auth::id())
+//                                    ->has('bookings', $bookingsDifA);
+//                            $query->has('bookings', function($query) use ($booking_id){
+//                                $query->where('id', '!=', $booking_id);
+//                            });
+
+                            $query->notInvited($booking_id);
                         }])
                         ->whereHas('group_user', function($query){
                             $query->where([

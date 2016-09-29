@@ -16,7 +16,7 @@ class Booking extends Model
         static::created(function($booking){
             $user_id = Auth::id();
             $booking_id = $booking->id;
-            $userBooking = new UserBooking(
+            $userBooking = new BookingUser(
                 compact('user_id', 'booking_id')
             );
 //            $userBooking = new UserBooking();
