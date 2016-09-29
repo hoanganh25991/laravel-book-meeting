@@ -11,6 +11,8 @@
 |
 */
 use App\Http\Requests\ApiRequest;
+use App\Room;
+use App\Booking;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -25,8 +27,8 @@ Route::get('rooms/load', function(){
 
 Route::post('rooms/load', function(ApiRequest $req){
     $rooms = json_decode($req->get('rooms'), true);
-    $msg = '';
 
+    $msg = '';
     try{
         DB::table('rooms')->insert($rooms);
         $msg .= 'success';
@@ -38,11 +40,27 @@ Route::post('rooms/load', function(ApiRequest $req){
 });
 
 Route::get('booking/create', function(){
-    return view('bookings.create');
+    $rooms = Room::all();
+    return view('bookings.create', compact('rooms'));
 });
 
 Route::post('booking/create', function(ApiRequest $req){
     $date = $req->get('date');
     $roomId = $req->get('room');
-    return $date . $roomId;
+    $user = Auth::user();
+
+    $booking = new Booking();
+    $booking->date = $date;
+    $booking->room_id = $roomId;
+    $booking->created_by = $user->id;
+
+    $msg = '';
+    try{
+        $booking->save();
+        $msg .= 'success';
+    }catch(\Exception $e){
+        $msg .= $e->getMessage();
+    }
+
+    return $msg;
 });
