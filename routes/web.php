@@ -15,6 +15,7 @@ use App\Room;
 use App\Booking;
 use App\UserBooking;
 use App\Group;
+use App\GroupUser;
 
 Route::get('/', function (){
     return view('welcome');
@@ -79,6 +80,7 @@ Route::get('group/create', function(){
 Route::post('group/create', function(ApiRequest $req){
     $groupInfo = $req->get('group');
     $group = new Group($groupInfo);
+    $group->created_by = Auth::id();
 
     $msg = '';
     try{
@@ -95,6 +97,41 @@ Route::get('group', function(){
     $groups = Group::all();
     return view('groups.index', compact('groups'));
 });
+
+Route::get('group/join', function(){
+    $groups = Group::with('group_user')->get();
+//    dd($groups);
+    foreach($groups as $group){
+        $btnTxt = 'join';
+        $groupUser = $group->group_user;
+//        var_dump($groupUser);
+        if(!empty($groupUser))
+            $btnTxt = $groupUser->status;
+        $group['btnTxt'] = $btnTxt;
+    }
+    return view('groups.join', compact('groups'));
+});
+
+Route::post('group/join', function(ApiRequest $req){
+    $group_id = $req->get('group_id');
+    $groupUser = new GroupUser([
+        'group_id' => $group_id,
+        'user_id' => Auth::id(),
+        'status' => 'pending'
+    ]);
+
+    $msg = '';
+    try{
+        $groupUser->save();
+        $msg = 'success';
+    }catch(\Exception $e){
+        $msg .= $e->getMessage();
+        return response($msg, 500)->header('Content-Type', 'application/json');
+    }
+    return response()->json(compact('msg'));
+
+});
+
 
 Route::get('invite', function (){
     $groups = GroupUser::where('user_id', Auth::id());

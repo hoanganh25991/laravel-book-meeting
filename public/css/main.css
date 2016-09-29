@@ -1,3 +1,6 @@
 pre{
-    overflow: hidden;
+    /*overflow: hidden;*/
+    white-space: pre-wrap;       /* css-3 */
+    overflow-y: auto;
+    max-height: 75px;
 }

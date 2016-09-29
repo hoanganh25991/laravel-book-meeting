@@ -8,7 +8,7 @@ use Auth;
 use DB;
 class Booking extends Model
 {
-    protected $fillable = ['date', 'room_id', 'created_by', 'description'];
+    protected $fillable = ['date', 'room_id', 'description'];
 
     public static function boot(){
         parent::boot();

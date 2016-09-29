@@ -14,7 +14,8 @@ class Group extends Model
         static::created(function($group){
             $userGroup = new GroupUser([
                 'group_id' => $group->id,
-                'user_id' => Auth::id()
+                'user_id' => Auth::id(),
+                'status' => 'joined'
             ]);
 
             try{
@@ -25,5 +26,9 @@ class Group extends Model
                 dd($e);
             }
         });
+    }
+
+    public function group_user(){
+        return $this->hasOne(GroupUser::class, 'group_id', 'id')->byUser();
     }
 }
