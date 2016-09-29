@@ -46,6 +46,7 @@ Route::post('rooms/load', function (ApiRequest $req){
 
 Route::get('booking/create', function (){
     $rooms = Room::all();
+
     return view('bookings.create', compact('rooms'));
 });
 
@@ -68,7 +69,10 @@ Route::post('booking/create', function (ApiRequest $req){
 
 Route::get('booking', function (){
     $userBookings = UserBooking::with('bookings')->where('user_id', Auth::id())->first();
-    $bookings = $userBookings->bookings;
+    !empty($userBookings) ?
+        $bookings = $userBookings->bookings :
+        $bookings = [];
+
     return view('bookings.index', compact('bookings'));
 });
 
@@ -89,6 +93,7 @@ Route::post('group/create', function (ApiRequest $req){
     }catch(\Exception $e){
         $msg .= $e->getMessage();
     };
+
     return $msg;
 });
 
@@ -100,7 +105,7 @@ Route::get('group', function (){
 Route::get('group/join', function (){
     $groups = Group::with('group_user')->get();
 //    dd($groups);
-    foreach($groups as $group){
+    $groups->each(function($group){
         $btnTxt = 'join';
         $groupUser = $group->group_user;
 //        var_dump($groupUser);
@@ -108,7 +113,8 @@ Route::get('group/join', function (){
             $btnTxt = $groupUser->status;
         }
         $group['btnTxt'] = $btnTxt;
-    }
+    });
+
     return view('groups.join', compact('groups'));
 });
 
@@ -155,17 +161,11 @@ Route::post('group/verify', function (ApiRequest $req){
     $user_id = $req->get('user_id');
     $group_id = $req->get('group_id');
     $groupUser = GroupUser::where([
-        [
-            'user_id',
-            '=',
-            $user_id
-        ],
-        [
-            'group_id',
-            '=',
-            $group_id
-        ]
-    ])->first();
+                                ['user_id', '=', $user_id],
+                                ['group_id', '=', $group_id]
+                            ])
+                            ->first()
+                            ;
     $groupUser->status = 'joined';
 
     $msg = '';
@@ -174,10 +174,11 @@ Route::post('group/verify', function (ApiRequest $req){
         $msg .= 'success';
     }catch(\Exception $e){
         $msg .= $e->getMessage();
+
         return response($msg, 500, [
             'Content-Type' => 'application/json'
         ]);
     }
-    return response()->json(compact('msg'));
 
+    return response()->json(compact('msg'));
 });
