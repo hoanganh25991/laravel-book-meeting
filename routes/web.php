@@ -24,6 +24,15 @@ Route::get('rooms/load', function(){
 });
 
 Route::post('rooms/load', function(ApiRequest $req){
-    $rooms = $req->get('rooms');
-    return json_encode($rooms);
+    $rooms = json_decode($req->get('rooms'), true);
+    $msg = '';
+
+    try{
+        DB::table('rooms')->insert($rooms);
+        $msg .= 'success';
+    }catch(\Exception $e){
+        $msg .= $e->getMessage();
+    }
+
+    return $msg;
 });

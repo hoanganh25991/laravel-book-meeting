@@ -12,17 +12,23 @@ function handleFile(e){
 		let data = e.target.result;
 		//noinspection JSUnresolvedVariable
 		let wb = XLSX.read(data, {type: 'binary'});
-		let wbJson = to_json(wb);
-		function to_json(workbook){
-			let result = {};
-			workbook.SheetNames.forEach(function(sheetName){
-				var rowObjArr = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-				if(rowObjArr.length > 0){
-					result[sheetName] = rowObjArr;
-				}
-			});
-			return result;
-		};
+		// let wbJson = to_json(wb);
+		// function to_json(workbook){
+		// 	let result = {};
+		// 	workbook.SheetNames.forEach(function(sheetName){
+		// 		var rowObjArr = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+		// 		if(rowObjArr.length > 0){
+		// 			result[sheetName] = rowObjArr;
+		// 		}
+		// 	});
+		// 	return result;
+		// };
+		let wbJson = XLSX.utils.sheet_to_row_object_array(wb.Sheets['Sheet1']);
+		wbJson.forEach((val)=>{
+			var created_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
+			val.created_at = created_at;
+			val.updated_at = created_at;
+		});
 		// console.log(wbJson);
 		let wbJsonPre= document.querySelector('#wbJsonPre');
 		wbJsonPre.innerHTML = JSON.stringify(wbJson);
