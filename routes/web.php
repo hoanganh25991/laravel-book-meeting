@@ -36,3 +36,13 @@ Route::post('rooms/load', function(ApiRequest $req){
 
     return $msg;
 });
+
+Route::get('booking/create', function(){
+    return view('bookings.create');
+});
+
+Route::post('booking/create', function(ApiRequest $req){
+    $date = $req->get('date');
+    $roomId = $req->get('room');
+    return $date . $roomId;
+});

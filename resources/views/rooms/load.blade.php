@@ -4,6 +4,7 @@
     <input type="file" name="rooms_file">
     <pre id="wbJsonPre">
     </pre>
+    <button id="btnLoad">load</button>
 @endsection
 
 @section('script_lib')

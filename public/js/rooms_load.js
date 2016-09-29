@@ -31,6 +31,19 @@ function handleFile(e){
 		});
 		// console.log(wbJson);
 		let wbJsonPre= document.querySelector('#wbJsonPre');
-		wbJsonPre.innerHTML = JSON.stringify(wbJson);
+		let wbJsonStr = JSON.stringify(wbJson);
+		wbJsonPre.innerHTML = wbJsonStr;
+
+		let btnLoad = document.querySelector('#btnLoad');
+		btnLoad.addEventListener('click', ()=>{
+			$.post({
+				url: '/rooms/load',
+				data: {
+					rooms: wbJsonStr
+				},
+				success: ()=>{console.log('success');},
+				error: ()=>{console.log('error');}
+			});
+		});
 	}
 };
