@@ -14,6 +14,7 @@ use App\Http\Requests\ApiRequest;
 use App\Room;
 use App\Booking;
 use App\UserBooking;
+use App\Group;
 
 Route::get('/', function (){
     return view('welcome');
@@ -68,6 +69,29 @@ Route::get('booking', function (){
                         ->first();
     $bookings = $userBookings->bookings;
     return view('bookings.index', compact('bookings'));
+});
+
+Route::get('group/create', function(){
+    return view('groups.create');
+});
+
+Route::post('group/create', function(ApiRequest $req){
+    $groupInfo = $req->get('group');
+    $group = new Group($groupInfo);
+
+    $msg = '';
+    try{
+        $group->save();
+        $msg .= 'success';
+    }catch(\Exception $e){
+        $msg .= $e->getMessage();
+    };
+    return $msg;
+});
+
+Route::get('group', function(){
+    $groups = Group::all();
+    return view('groups.index', compact('groups'));
 });
 
 Route::get('invite', function (){
