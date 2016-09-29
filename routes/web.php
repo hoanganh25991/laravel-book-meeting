@@ -13,6 +13,7 @@
 use App\Http\Requests\ApiRequest;
 use App\Room;
 use App\Booking;
+use App\UserBooking;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -57,10 +58,28 @@ Route::post('booking/create', function(ApiRequest $req){
     $msg = '';
     try{
         $booking->save();
+
+//        $user_id = Auth::id();
+//        $booking_id = $booking->id;
+//        $userBooking = new UserBooking(
+//            compact('user_id', 'booking_id')
+//        );
+////        $userBooking = new UserBooking();
+////        $userBooking->user_id = $user_id;
+////        $userBooking->booking_id = $booking_id;
+//        $userBooking->save();
         $msg .= 'success';
     }catch(\Exception $e){
         $msg .= $e->getMessage();
     }
 
     return $msg;
+});
+
+Route::get('booking', function(){
+//    $bookings = Booking::where('created_by', );
+});
+
+Route::get('invite', function(){
+    return view('invite');
 });
