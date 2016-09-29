@@ -31,4 +31,13 @@ class Group extends Model
     public function group_user(){
         return $this->hasOne(GroupUser::class, 'group_id', 'id')->byUser();
     }
+    
+    public function scopeCreatedByUser($query){
+        return $query->where('created_by', Auth::id());
+    }
+
+    public function users(){
+//        return $this->belongsToMany(User::class, 'group_user', 'user_id', 'group_id');
+        return $this->belongsToMany(User::class);
+    }
 }

@@ -16,6 +16,7 @@ use App\Booking;
 use App\UserBooking;
 use App\Group;
 use App\GroupUser;
+//use App\User;
 
 Route::get('/', function (){
     return view('welcome');
@@ -66,18 +67,16 @@ Route::post('booking/create', function (ApiRequest $req){
 });
 
 Route::get('booking', function (){
-    $userBookings = UserBooking::with('bookings')
-                        ->where('user_id', Auth::id())
-                        ->first();
+    $userBookings = UserBooking::with('bookings')->where('user_id', Auth::id())->first();
     $bookings = $userBookings->bookings;
     return view('bookings.index', compact('bookings'));
 });
 
-Route::get('group/create', function(){
+Route::get('group/create', function (){
     return view('groups.create');
 });
 
-Route::post('group/create', function(ApiRequest $req){
+Route::post('group/create', function (ApiRequest $req){
     $groupInfo = $req->get('group');
     $group = new Group($groupInfo);
     $group->created_by = Auth::id();
@@ -93,20 +92,21 @@ Route::post('group/create', function(ApiRequest $req){
     return $msg;
 });
 
-Route::get('group', function(){
+Route::get('group', function (){
     $groups = Group::all();
     return view('groups.index', compact('groups'));
 });
 
-Route::get('group/join', function(){
+Route::get('group/join', function (){
     $groups = Group::with('group_user')->get();
 //    dd($groups);
     foreach($groups as $group){
         $btnTxt = 'join';
         $groupUser = $group->group_user;
 //        var_dump($groupUser);
-        if(!empty($groupUser))
+        if(!empty($groupUser)){
             $btnTxt = $groupUser->status;
+        }
         $group['btnTxt'] = $btnTxt;
     }
     return view('groups.join', compact('groups'));
@@ -115,7 +115,7 @@ Route::get('group/join', function(){
 /**
  * [+] improve pending click > group_user create second row
  */
-Route::post('group/join', function(ApiRequest $req){
+Route::post('group/join', function (ApiRequest $req){
     $group_id = $req->get('group_id');
     $groupUser = new GroupUser([
         'group_id' => $group_id,
@@ -129,14 +129,54 @@ Route::post('group/join', function(ApiRequest $req){
         $msg = 'success';
     }catch(\Exception $e){
         $msg .= $e->getMessage();
-        return response($msg, 500)->header('Content-Type', 'application/json');
+        return response($msg, 500, [
+            'Content-Type' => 'application/json'
+        ]);
     }
     return response()->json(compact('msg'));
 
 });
 
+Route::get('group/verify', function (){
+    //HOW TO ONLY LOAD GROUP as status 'pending'
+    $groups = Group::with([
+        'users' => function ($query){
+            $query->where([
+                ['users.id', '!=', Auth::id()],
+            ]);
+        }
+    ])->where('created_by', Auth::id())->get();
+//    dd($groups);
+    return view('groups.verify', compact('groups'));
+});
 
-Route::get('invite', function (){
-    $groups = GroupUser::where('user_id', Auth::id());
-    return view('invite');
+Route::post('group/verify', function (ApiRequest $req){
+    $user_id = $req->get('user_id');
+    $group_id = $req->get('group_id');
+    $groupUser = GroupUser::where([
+        [
+            'user_id',
+            '=',
+            $user_id
+        ],
+        [
+            'group_id',
+            '=',
+            $group_id
+        ]
+    ])->first();
+    $groupUser->status = 'joined';
+
+    $msg = '';
+    try{
+        $groupUser->save();
+        $msg .= 'success';
+    }catch(\Exception $e){
+        $msg .= $e->getMessage();
+        return response($msg, 500, [
+            'Content-Type' => 'application/json'
+        ]);
+    }
+    return response()->json(compact('msg'));
+
 });
