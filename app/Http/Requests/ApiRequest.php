@@ -13,7 +13,8 @@ class ApiRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return true; //allow any body handle GET/POST
+//        return false; //only allow authorized
     }
 
     /**

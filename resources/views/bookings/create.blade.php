@@ -6,7 +6,7 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/kendo-ui-core/2014.1.416/styles/kendo.metro.min.css"/>
     <script src="http://kendo.cdn.telerik.com/2014.2.716/js/jquery.min.js"></script>
     <script src="http://kendo.cdn.telerik.com/2014.2.716/js/kendo.ui.core.min.js"></script>
-    <form action="/booking/create" method="POST">
+    <form action="{{ url('booking/create') }}" method="POST">
         <label for="bookingDate">Date:</label>
         <!-- <input type="date" name="date" id="bookingDate"> -->
         <input id="bookingDate" style="width: 100%;" name="booking[date]"/>

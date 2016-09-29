@@ -13,7 +13,7 @@
 use App\Http\Requests\ApiRequest;
 use App\Room;
 use App\Booking;
-use App\UserBooking;
+use App\BookingUser;
 use App\Group;
 use App\GroupUser;
 //use App\User;
@@ -68,7 +68,11 @@ Route::post('booking/create', function (ApiRequest $req){
 });
 
 Route::get('booking', function (){
-    $userBookings = UserBooking::with('bookings')->where('user_id', Auth::id())->first();
+    $userBookings = BookingUser::with(['bookings' => function($query){
+                                $query->where('created_by', Auth::id());
+                            }])
+//                            ->where('user_id', Auth::id()) //not TRUE, only for created_by
+                            ->first();
     !empty($userBookings) ?
         $bookings = $userBookings->bookings :
         $bookings = [];
@@ -181,4 +185,45 @@ Route::post('group/verify', function (ApiRequest $req){
     }
 
     return response()->json(compact('msg'));
+});
+
+Route::get('booking/{id}/invite', function($booking_id){
+//    dd($booking_id);
+    //load users in same group with userA
+    $groups = Group::with(['users' => function($query){
+                            $query->where('users.id', '!=', Auth::id())
+                                    ->whereDoesntHave('bookings');
+                        }])
+                        ->whereHas('group_user', function($query){
+                            $query->where([
+                                ['user_id', Auth::id()],
+                                ['status', 'joined']
+                            ]);
+                        })
+                        ->get()
+                        ;
+//    $groups-
+    
+    return view('bookings.invite', compact('groups', 'booking_id'));
+});
+
+Route::post('booking/{id}/invite', function(ApiRequest $req){
+    $user_id = $req->get('user_id');
+    $booking_id = $req->get('booking_id');
+    $user_booking = new BookingUser([
+        'user_id' => $user_id,
+        'booking_id' => $booking_id
+    ]);
+
+    $msg = '';
+    try{
+        $user_booking->save();
+        $msg .= 'success';
+    }catch(\Exception $e){
+        $msg .= $e->getMessage();
+
+        return response($msg, 500, ['Content-Type' => 'application/json']);
+    }
+
+    return response($msg, 200, ['Content-Typ' => 'application/json']);
 });
