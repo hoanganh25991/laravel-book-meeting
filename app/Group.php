@@ -29,7 +29,7 @@ class Group extends Model
     }
 
     public function group_user(){
-        return $this->hasOne(GroupUser::class, 'group_id', 'id')->byUser();
+        return $this->hasOne(GroupUser::class, 'group_id', 'id');
     }
     
     public function scopeCreatedByUser($query){

@@ -139,13 +139,14 @@ Route::post('group/join', function (ApiRequest $req){
 
 Route::get('group/verify', function (){
     //HOW TO ONLY LOAD GROUP as status 'pending'
-    $groups = Group::with([
-        'users' => function ($query){
-            $query->where([
-                ['users.id', '!=', Auth::id()],
-            ]);
-        }
-    ])->where('created_by', Auth::id())->get();
+    $groups = Group::with(['users' => function ($query){
+                        $query->where('users.id', '!=', Auth::id());
+                    }])
+                    ->whereHas('group_user', function($query){
+                        $query->where('status', 'pending');
+                    })
+                    ->where('created_by', Auth::id())
+                    ->get();
 //    dd($groups);
     return view('groups.verify', compact('groups'));
 });
