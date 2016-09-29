@@ -112,6 +112,9 @@ Route::get('group/join', function(){
     return view('groups.join', compact('groups'));
 });
 
+/**
+ * [+] improve pending click > group_user create second row
+ */
 Route::post('group/join', function(ApiRequest $req){
     $group_id = $req->get('group_id');
     $groupUser = new GroupUser([
