@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use Auth;
-
+use DB;
 class Booking extends Model
 {
     protected $fillable = ['date', 'room_id', 'created_by', 'description'];
@@ -24,7 +24,9 @@ class Booking extends Model
 //            $userBooking->booking_id = $booking_id;
             try{
                 $userBooking->save();
+                DB::commit();
             }catch(\Exception $e){
+                DB::rollback();
                 dd($e);
             }
         });

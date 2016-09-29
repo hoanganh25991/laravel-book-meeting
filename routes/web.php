@@ -54,6 +54,7 @@ Route::post('booking/create', function (ApiRequest $req){
 
     $msg = '';
     try{
+        DB::beginTransaction();
         $booking->save();
         $msg .= 'success';
     }catch(\Exception $e){
@@ -81,6 +82,7 @@ Route::post('group/create', function(ApiRequest $req){
 
     $msg = '';
     try{
+        DB::beginTransaction();
         $group->save();
         $msg .= 'success';
     }catch(\Exception $e){
@@ -95,5 +97,6 @@ Route::get('group', function(){
 });
 
 Route::get('invite', function (){
+    $groups = GroupUser::where('user_id', Auth::id());
     return view('invite');
 });
