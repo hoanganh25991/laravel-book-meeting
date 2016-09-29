@@ -9,7 +9,7 @@
     <form action="/booking/create" method="POST">
         <label for="bookingDate">Date:</label>
         <!-- <input type="date" name="date" id="bookingDate"> -->
-        <input id="bookingDate" style="width: 100%;" name="date"/>
+        <input id="bookingDate" style="width: 100%;" name="booking[date]"/>
         <script id="footer-template" type="text/x-kendo-template">
             Today - #: kendo.toString(data, "d") #
         </script>
@@ -24,11 +24,12 @@
             });
         </script>
         {{--<input type="number" name="room" id="bookingRoom">--}}
-        <select name="room" id="bookingRoom">
+        <select name="booking[room_id]">
             @foreach($rooms as $room)
                 <option value="{{ $room->id }}">{{ $room->name }}</option>
             @endforeach
         </select>
+        <input type="text" name="booking[description]">
         <input type="submit" name="submitBooking" value="submit">
     </form>
 @endsection

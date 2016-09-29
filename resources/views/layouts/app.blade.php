@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([

@@ -14,7 +14,8 @@ use App\Http\Requests\ApiRequest;
 use App\Room;
 use App\Booking;
 use App\UserBooking;
-Route::get('/', function () {
+
+Route::get('/', function (){
     return view('welcome');
 });
 
@@ -22,11 +23,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-Route::get('rooms/load', function(){
+Route::get('rooms/load', function (){
     return view('rooms.load');
 });
 
-Route::post('rooms/load', function(ApiRequest $req){
+Route::post('rooms/load', function (ApiRequest $req){
     $rooms = json_decode($req->get('rooms'), true);
 
     $msg = '';
@@ -40,34 +41,19 @@ Route::post('rooms/load', function(ApiRequest $req){
     return $msg;
 });
 
-Route::get('booking/create', function(){
+Route::get('booking/create', function (){
     $rooms = Room::all();
     return view('bookings.create', compact('rooms'));
 });
 
-Route::post('booking/create', function(ApiRequest $req){
-    $date = $req->get('date');
-    $roomId = $req->get('room');
-    $user = Auth::user();
-
-    $booking = new Booking();
-    $booking->date = $date;
-    $booking->room_id = $roomId;
-    $booking->created_by = $user->id;
+Route::post('booking/create', function (ApiRequest $req){
+    $bookingInfo = $req->get('booking');
+    $booking = new Booking($bookingInfo);
+    $booking->created_by = Auth::id();
 
     $msg = '';
     try{
         $booking->save();
-
-//        $user_id = Auth::id();
-//        $booking_id = $booking->id;
-//        $userBooking = new UserBooking(
-//            compact('user_id', 'booking_id')
-//        );
-////        $userBooking = new UserBooking();
-////        $userBooking->user_id = $user_id;
-////        $userBooking->booking_id = $booking_id;
-//        $userBooking->save();
         $msg .= 'success';
     }catch(\Exception $e){
         $msg .= $e->getMessage();
@@ -76,10 +62,14 @@ Route::post('booking/create', function(ApiRequest $req){
     return $msg;
 });
 
-Route::get('booking', function(){
-//    $bookings = Booking::where('created_by', );
+Route::get('booking', function (){
+    $userBookings = UserBooking::with('bookings')
+                        ->where('user_id', Auth::id())
+                        ->first();
+    $bookings = $userBookings->bookings;
+    return view('bookings.index', compact('bookings'));
 });
 
-Route::get('invite', function(){
+Route::get('invite', function (){
     return view('invite');
 });
