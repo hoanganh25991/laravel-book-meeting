@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <ul>
+    <h1 class="page-header">{{ Auth::user()->name }}'s Bookings</h1>
+    <ul class="list-group">
     @foreach($bookings as $booking)
-        <li>
+        <li class="list-group-item">
             <a href='{{ url("booking/{$booking->id}") }}'>{{ $booking->description }}</a>
             <pre>{{ $booking }}</pre>
             <button>

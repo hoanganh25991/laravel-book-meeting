@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Auth;
 
 class ApiRequest extends FormRequest
 {
@@ -13,8 +14,9 @@ class ApiRequest extends FormRequest
      */
     public function authorize()
     {
-        return true; //allow any body handle GET/POST
+//        return true; //allow any body handle GET/POST
 //        return false; //only allow authorized
+        return !empty(Auth::id());
     }
 
     /**

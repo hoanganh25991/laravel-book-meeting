@@ -14,6 +14,7 @@
     <link href="/css/app.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="http://getbootstrap.com/assets/css/docs.min.css">
     <!-- Scripts -->
 </head>
 <body>
