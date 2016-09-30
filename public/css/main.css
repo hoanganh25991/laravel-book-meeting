@@ -45,3 +45,24 @@
     right: 10vw;
     bottom: 5vh;
 }
+
+.avatar-addon{
+    padding: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    /* color: #555; */
+    text-align: center;
+    /* background-color: #eee; */
+    border: 1px solid #ccd0d2;
+    border-radius: 4px;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.avatar{
+    min-width: 30px;
+    /*min-height: 20px;*/
+}
