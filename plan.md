@@ -126,10 +126,17 @@ Miscellaneous:
 	id|officeX|roomId
 ----------------
 #TASK
-+ Insert rooms from xls file
-+ booking > create
-+ booking > index
-+ group > create
-+ group > index
-+ invite > load USER from groups
-+ booking/X > detail
++ ~~Insert rooms from xls file~~
++ ~~booking > create~~
++ ~~booking > index~~
++ ~~group > create~~
++ ~~group > index~~
++ ~~invite > load USER from groups~~
++ ~~booking/X > detail~~
++ we need group/X > detail
++ check basic-function work SMOOTH
++ check basic-function work EASY to USE
++ check UI look simple
++ check userA create group1 > group_user has 1,A (quite dangerous!!!)
++ check userA create booking1 > booking_user has 1,A (too dangerous!!!)
+WHAT HAPPEN, when we CLEAR booking1 from userA, WHAT MAKE SURE THAT booking_user updated too???

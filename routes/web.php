@@ -25,7 +25,7 @@ Route::get('/', function (){
 Auth::routes();
 
 Route::get('home', 'HomeController@index')->name('home');
-
+/* ROOM */
 Route::get('rooms/load', function (){
     return view('rooms.load');
 });
@@ -43,8 +43,9 @@ Route::post('rooms/load', function (ApiRequest $req){
 
     return $msg;
 });
-
+/* BOOKING */
 Route::get('booking/create', function (){
+    //load rooms to create select-box
     $rooms = Room::all();
 
     return view('bookings.create', compact('rooms'));
@@ -68,19 +69,25 @@ Route::post('booking/create', function (ApiRequest $req){
 });
 
 Route::get('booking', function (){
+    //from user >load> booking
+    //which created_by user
     $user = User::with(['bookings' => function($query){
                     $query->where('created_by', Auth::id());
                 }])
                 ->where('id', Auth::id())
                 ->first()
                 ;
+//    $bookings = [];
+//    if(!empty($user))
+//        $bookings = $user->bookings;
+
     !empty($user) ?
         $bookings = $user->bookings :
         $bookings = [];
 
     return view('bookings.index', compact('bookings'));
 });
-
+/* GROUP */
 Route::get('group/create', function (){
     return view('groups.create');
 });
@@ -92,6 +99,10 @@ Route::post('group/create', function (ApiRequest $req){
 
     $msg = '';
     try{
+        //transaction to work with group_user
+        //if group_user FAILED to update record
+        //group !saved
+        /* @warn NOT GOOD */
         DB::beginTransaction();
         $group->save();
         $msg .= 'success';
@@ -103,11 +114,16 @@ Route::post('group/create', function (ApiRequest $req){
 });
 
 Route::get('group', function (){
+    //list all groups
+    //may let user JOIN INTO
+    //may let user handle up-on group
     $groups = Group::all();
     return view('groups.index', compact('groups'));
 });
 
 Route::get('group/join', function (){
+    //load group with user > group status
+    //join (completely new) | pending (wait for host userA accept)
     $groups = Group::with('group_user')->get();
 //    dd($groups);
     $groups->each(function($group){
@@ -123,11 +139,10 @@ Route::get('group/join', function (){
     return view('groups.join', compact('groups'));
 });
 
-/**
- * [+] improve pending click > group_user create second row
- */
 Route::post('group/join', function (ApiRequest $req){
     $group_id = $req->get('group_id');
+    //userB join in group`
+    //create a relation group1-userB
     $groupUser = new GroupUser([
         'group_id' => $group_id,
         'user_id' => Auth::id(),
@@ -145,18 +160,32 @@ Route::post('group/join', function (ApiRequest $req){
         ]);
     }
     return response()->json(compact('msg'));
-
 });
 
 Route::get('group/verify', function (){
-    //HOW TO ONLY LOAD GROUP as status 'pending'
+    //userA load group1, group2, group3,..
+    //load all groups, which userA join-in
+    //BUT in each group, just load user != userA
+    //AND only load group with status 'pending'
     $groups = Group::with(['users' => function ($query){
+                        //no need to load userA
                         $query->where('users.id', '!=', Auth::id());
                     }])
                     ->whereHas('group_user', function($query){
+                        //group with status 'pending'
+                        //group-user, where userB accepted
+                        //no need to load here
                         $query->where('status', 'pending');
                     })
-                    ->where('created_by', Auth::id())
+                    /* @warn ONLY load group by userA is WRONG */
+//                    ->where('created_by', Auth::id())
+//                    ->whereUserAJoinedIn
+                    ->whereHas('group_user', function($query){
+                        $query->where([
+                            ['user_id', Auth::id()],
+                            ['status', 'joined']
+                        ]);
+                    })
                     ->get();
 //    dd($groups);
     return view('groups.verify', compact('groups'));
@@ -165,6 +194,9 @@ Route::get('group/verify', function (){
 Route::post('group/verify', function (ApiRequest $req){
     $user_id = $req->get('user_id');
     $group_id = $req->get('group_id');
+    //load groupUser
+    //then update status
+    //done
     $groupUser = GroupUser::where([
                                 ['user_id', '=', $user_id],
                                 ['group_id', '=', $group_id]
@@ -187,21 +219,13 @@ Route::post('group/verify', function (ApiRequest $req){
 
     return response()->json(compact('msg'));
 });
-
+/* BOOKING */
 Route::get('booking/{id}/invite', function($booking_id){
 //    dd($booking_id);
+    //invite user to booking
+    //base on group123 where userA join-in
+    //load userBCD who not invited
     $groups = Group::with(['users' => function($query) use($booking_id){
-//                            $query->whereDoesntHave('bookings');
-//                            $bookingsDifA = function($query)use($booking_id){
-//                                $query->where('id', '!=', $booking_id);
-//                            };
-////                            Clouser::bind($bookingsDifA, null, Group::class);
-//                            $query->where('users.id', '!=', Auth::id())
-//                                    ->has('bookings', $bookingsDifA);
-//                            $query->has('bookings', function($query) use ($booking_id){
-//                                $query->where('id', '!=', $booking_id);
-//                            });
-
                             $query->notInvited($booking_id);
                         }])
                         ->whereHas('group_user', function($query){
@@ -212,8 +236,7 @@ Route::get('booking/{id}/invite', function($booking_id){
                         })
                         ->get()
                         ;
-//    $groups-
-    
+
     return view('bookings.invite', compact('groups', 'booking_id'));
 });
 
