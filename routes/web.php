@@ -26,11 +26,11 @@ Auth::routes();
 
 Route::get('home', 'HomeController@index')->name('home');
 /* ROOM */
-Route::get('rooms/load', function (){
+Route::get('room/load', function (){
     return view('rooms.load');
 });
 
-Route::post('rooms/load', function (ApiRequest $req){
+Route::post('room/load', function (ApiRequest $req){
     $rooms = json_decode($req->get('rooms'), true);
 
     $msg = '';
@@ -42,6 +42,15 @@ Route::post('rooms/load', function (ApiRequest $req){
     }
 
     return $msg;
+});
+
+Route::get('room', function(){
+    //load ALL at this point
+    /* @warn update precise to userA location/organization */
+    //better than just show ALL!!!
+    $rooms = Room::all();
+    
+    return view('rooms.index', compact('rooms'));
 });
 /* BOOKING */
 Route::get('booking/create', function (){

@@ -2,5 +2,6 @@ pre{
     /*overflow: hidden;*/
     white-space: pre-wrap;       /* css-3 */
     overflow-y: auto;
-    max-height: 75px;
+    max-height: 100px;
+    max-width: 350px;
 }

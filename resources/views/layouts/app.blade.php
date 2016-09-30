@@ -78,6 +78,13 @@
     </nav>
     <!-- Scripts -->
     <script src="/js/app.js"></script>
-    @yield('content')
+    {{--<script src="{{ url('js/json-highlight.js') }}"></script>--}}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                @yield('content')
+            </div>
+        </div>
+    </div>
 </body>
 </html>
