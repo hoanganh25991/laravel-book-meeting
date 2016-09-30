@@ -5,3 +5,7 @@ pre{
     max-height: 100px;
     max-width: 350px;
 }
+
+#bookingCreateForm div{
+    input: 350px;
+}
