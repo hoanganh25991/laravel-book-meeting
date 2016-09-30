@@ -21,6 +21,7 @@
     position: fixed;
     right: 0;
     width: 350px;
+    z-index: 15;
 }
 
 .my-addon{
@@ -37,4 +38,10 @@
     white-space: nowrap;
     vertical-align: middle;
     display: table-cell;
+}
+
+.my-flow{
+    position: fixed;
+    right: 10vw;
+    bottom: 5vh;
 }

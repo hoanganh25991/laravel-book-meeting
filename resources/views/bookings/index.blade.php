@@ -20,7 +20,11 @@
         </li>
     @endforeach
     </ul>
-    <button>
-        <a href="{{ url('booking/create') }}">create</a>
-    </button>
 @endsection
+
+@section('out-box')
+    <a href="{{ url('booking/create') }}" class="btn btn-info my-flow">
+        <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
+    </a>
+@endsection
+

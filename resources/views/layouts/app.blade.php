@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="http://getbootstrap.com/assets/css/docs.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" />
     <!-- Scripts -->
 </head>
 <body>
@@ -31,7 +32,7 @@
                 </button>
 
                 <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('home') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
             </div>
@@ -46,8 +47,8 @@
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
+                        <li><a href="{{ url('login') }}">Login</a></li>
+                        <li><a href="{{ url('register') }}">Register</a></li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -88,7 +89,7 @@
                     let flashMsgClass = flashMsg.getAttribute('class');
                     let isImportantMsg = flashMsgClass.includes('alert-important');
 
-                    let waitFor = 1500;
+                    let waitFor = 3000;
                     let interval = setInterval(function(){
                         if(!isImportantMsg){
                             flashMsg.className += ' animated fadeOutRight';
@@ -109,5 +110,6 @@
             </div>
         </div>
     </div>
+    @yield('out-box')
 </body>
 </html>
