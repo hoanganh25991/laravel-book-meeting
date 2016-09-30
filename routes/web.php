@@ -231,11 +231,14 @@ Route::post('group/verify', function (ApiRequest $req){
     return response()->json(compact('msg'));
 });
 /* BOOKING */
-Route::get('booking/{id}/invite', function($booking_id){
+Route::get('booking/{booking}/invite', function(Booking $booking){
 //    dd($booking_id);
     //invite user to booking
     //base on group123 where userA join-in
     //load userBCD who not invited
+    //to prevent ERROR when $booking not exist
+    //let $booking_id COME FROM where check
+    $booking_id = $booking->id;
     $groups = Group::with(['users' => function($query) use($booking_id){
                             $query->notInvited($booking_id);
                         }])
