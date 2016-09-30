@@ -70,11 +70,13 @@ Route::post('booking/create', function (ApiRequest $req){
         DB::beginTransaction();
         $booking->save();
         $msg .= 'success';
+        flash($msg, 'success');
     }catch(\Exception $e){
         $msg .= $e->getMessage();
+        flash($msg, 'warning');
     }
-
-    return $msg;
+    
+    return redirect()->to(url("booking/{$booking->id}/invite"));
 });
 
 Route::get('booking', function (){

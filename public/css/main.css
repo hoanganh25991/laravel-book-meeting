@@ -9,3 +9,16 @@ pre{
 #bookingCreateForm div{
     input: 350px;
 }
+
+.hidden {
+    transition: all 2s ease-in-out;
+}
+
+.main-content{
+    position: relative;
+}
+.f_overlay{
+    position: fixed;
+    right: 0;
+    width: 350px;
+}

@@ -13,6 +13,7 @@
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
@@ -79,7 +80,29 @@
     <!-- Scripts -->
     <script src="/js/app.js"></script>
     {{--<script src="{{ url('js/json-highlight.js') }}"></script>--}}
-    <div class="container">
+    <div class="container main-content">
+        <div class="f_overlay">
+            @include('flash::message')
+            <script>
+                (function(){
+                    let flashMsg = document.querySelector('div.alert');
+                    if(!flashMsg){
+                        return false;
+                    }
+                    let flashMsgClass = flashMsg.getAttribute('class');
+                    let isImportantMsg = flashMsgClass.includes('alert-important');
+
+                    let waitFor = 1500;
+                    let interval = setInterval(function(){
+                        if(!isImportantMsg){
+                            flashMsg.className += ' animated fadeOutRight';
+                        }
+                        clearInterval(interval);
+                    }, waitFor);
+                })();
+            </script>
+        </div>
+
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 @yield('content')
