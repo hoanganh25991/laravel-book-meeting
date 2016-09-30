@@ -1,16 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-    <ul id="groupList">
+    <h1>Join Group</h1>
+    <ul id="groupList" class="list-group">
         @foreach($groups as $group)
-            <li>{{ $group->name }}
-                <button class="joinGroup" group-id="{{ $group->id }}">{{ $group->btnTxt }}</button>
+            <li class="list-group-item">
+                <div class="input-group">
+                    <a href='{{ url("group/{$group->id}") }}' class="h4"><strong>{{ $group->name }}</strong>-group</a>
+                    <p class="small text-muted">{{ $group }}</p>
+                    <a group-id="{{ $group->id }}" class="my-addon btn btn-info">{{ $group->btnTxt }}</a>
+                </div>
             </li>
         @endforeach
     </ul>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
-        $('#groupList').on('click', 'button', function(){
+        $('#groupList').on('click', 'a.my-addon', function(){
             let btn = $(this);
             let status = btn.text();
             if(status == 'pending'){

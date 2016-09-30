@@ -15,7 +15,7 @@
                                 <img src="{{ url('images/new-user-image-default.png') }}" alt="avatar" class="avatar img-thumbnail">
                             </span>
                             <a href='{{ url("user/{$user->id}") }}' class="form-control">{{ $user->name }}</a>
-                            <a user-id="{{ $user->id }}" booking-id="{{ $booking_id }}" class="my-addon btn btn-info ">invite</a>
+                            <a user-name="{{ $user->name }}" user-id="{{ $user->id }}" booking-id="{{ $booking_id }}" class="my-addon btn btn-info ">invite</a>
                         </div>
                     @endforeach
                 </div>
@@ -24,11 +24,18 @@
     </ul>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
-        $('.usersList').on('click', 'a', function(){
+        $('.usersList').on('click', 'a.my-addon', function(){
             let btn = $(this);
+//            console.log(btn.parent());
+            let userList = btn.parent();
             let user_id = btn.attr('user-id');
             let booking_id = btn.attr('booking-id');
             console.log(user_id);
+
+            //flash message prepare
+            //on success DO IT
+            let flashMsg = document.querySelector('div.alert');
+            let user_name = btn.attr('user-name');
             $.post({
                 url: '{{ url("booking/{$booking_id}/invite") }}',
                 data: {
@@ -37,7 +44,11 @@
                 },
                 success: function(res){
                     console.log(res);
-                    {{--window.location.href = '{{ url("booking/{$booking_id}") }}';--}}
+                    flashMsg.innerText = `Invited ${user_name}`;
+                    flashMsg.className = 'alert alert-info';
+                    $(flashMsg).fadeIn();
+                    $(flashMsg).delay(500).fadeOut();
+                    userList.delay(500).fadeOut();
                 },
                 error: function(res){
                     console.log(res);

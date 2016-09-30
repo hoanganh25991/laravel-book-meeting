@@ -135,7 +135,11 @@ Route::get('group', function (){
 Route::get('group/join', function (){
     //load group with user > group status
     //join (completely new) | pending (wait for host userA accept)
-    $groups = Group::with('group_user')->get();
+    $groups = Group::with(['group_user' => function($query){
+                            $query->byUser();
+                        }])
+                        ->get()
+                        ;
 //    dd($groups);
     $groups->each(function($group){
         $btnTxt = 'join';
