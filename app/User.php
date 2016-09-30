@@ -40,6 +40,4 @@ class User extends Authenticatable
             $query->where('booking_id', $booking_id);
         });
     }
-    
-    
 }

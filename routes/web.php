@@ -24,7 +24,7 @@ Route::get('/', function (){
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('home', 'HomeController@index')->name('home');
 
 Route::get('rooms/load', function (){
     return view('rooms.load');
@@ -236,4 +236,32 @@ Route::post('booking/{id}/invite', function(ApiRequest $req){
     }
 
     return response($msg, 200, ['Content-Typ' => 'application/json']);
+});
+
+/**
+ * @warn ONLY allow booking user JOINED
+ */
+Route::get('booking/{booking}', function(Booking $booking){
+//    dd($booking);
+    //check user ---related to ---booking
+    $bookingUser = BookingUser::where([
+                                    ['booking_id', $booking->id],
+                                    ['user_id', Auth::id()]
+                                ])
+                                ->first()
+                                ;
+//    dd($bookingUser);
+    if(empty($bookingUser)){
+        return redirect()->route('home');
+    }
+    
+    /* load users related to BOOKING */
+    $bookingUsers = BookingUser::with('user')
+                                ->where([
+                                    ['booking_id', $booking->id],
+                                    ['user_id', '!=', Auth::id()]
+                                ])
+                                ->get();
+    
+    return view('bookings.detail', compact('booking', 'bookingUsers'));
 });

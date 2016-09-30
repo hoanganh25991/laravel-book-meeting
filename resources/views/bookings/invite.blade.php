@@ -29,6 +29,7 @@
                 },
                 success: function(res){
                     console.log(res);
+                    window.location.href = '{{ url("booking/{$booking_id}") }}';
                 },
                 error: function(res){
                     console.log(res);

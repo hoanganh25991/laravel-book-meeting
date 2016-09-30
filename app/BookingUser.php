@@ -12,4 +12,8 @@ class BookingUser extends Model
     public function bookings(){
         return $this->hasMany(Booking::class, 'id', 'booking_id');
     }
+    
+    public function user(){
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }
