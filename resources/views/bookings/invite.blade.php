@@ -7,12 +7,10 @@
                 <h4><strong>{{ $group->name }}</strong></h4>
                 <div class="col-md-offset-1">
                     @foreach($group->users as $user)
-                        <form>
-                            <div class="input-group usersList">
-                                <a href='{{ url("user/{$user->id}") }}' class="form-control">{{ $user->name }}</a>
-                                <a user-id="{{ $user->id }}" booking-id="{{ $booking_id }}" class="my-addon btn btn-info ">invite</a>
-                            </div>
-                        </form>
+                        <div class="input-group usersList">
+                            <a href='{{ url("user/{$user->id}") }}' class="form-control">{{ $user->name }}</a>
+                            <a user-id="{{ $user->id }}" booking-id="{{ $booking_id }}" class="my-addon btn btn-info ">invite</a>
+                        </div>
                     @endforeach
                 </div>
             </li>
