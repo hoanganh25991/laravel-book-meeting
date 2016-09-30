@@ -1,10 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <ul>
+    <h1>All Rooms</h1>
+    <ul class="list-group">
         @foreach($rooms as $room)
-            <li>
-                <pre>{{ $room->toJson(JSON_PRETTY_PRINT) }}</pre>
+            <li class="list-group-item">
+                {{ $room->toJson(JSON_PRETTY_PRINT) }}
             </li>
         @endforeach
     </ul>

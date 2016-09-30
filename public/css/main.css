@@ -1,10 +1,10 @@
-pre{
-    /*overflow: hidden;*/
-    white-space: pre-wrap;       /* css-3 */
-    overflow-y: auto;
-    max-height: 100px;
-    max-width: 350px;
-}
+/*pre{*/
+    /*!*overflow: hidden;*!*/
+    /*white-space: pre-wrap;       !* css-3 *!*/
+    /*overflow-y: auto;*/
+    /*max-height: 100px;*/
+    /*max-width: 350px;*/
+/*}*/
 
 #bookingCreateForm div{
     input: 350px;
@@ -21,4 +21,20 @@ pre{
     position: fixed;
     right: 0;
     width: 350px;
+}
+
+.my-addon{
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    /* color: #555; */
+    text-align: center;
+    /* background-color: #eee; */
+    border: 1px solid #ccd0d2;
+    border-radius: 4px;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    display: table-cell;
 }

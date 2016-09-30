@@ -10,6 +10,8 @@ class Booking extends Model
 {
     protected $fillable = ['date', 'room_id', 'description'];
 
+    protected $hidden = ['id', 'pivot'];
+
     public static function boot(){
         parent::boot();
 
