@@ -26,7 +26,7 @@ Auth::routes();
 
 Route::get('home', 'HomeController@index')->name('home');
 /* ROOM */
-Route::get('room/load', function (){
+Route::get('room/load', function (ApiRequest $req){
     return view('rooms.load');
 });
 
@@ -44,7 +44,7 @@ Route::post('room/load', function (ApiRequest $req){
     return $msg;
 });
 
-Route::get('room', function(){
+Route::get('room', function(ApiRequest $req){
     //load ALL at this point
     /* @warn update precise to userA location/organization */
     //better than just show ALL!!!
@@ -53,7 +53,7 @@ Route::get('room', function(){
     return view('rooms.index', compact('rooms'));
 });
 /* BOOKING */
-Route::get('booking/create', function (){
+Route::get('booking/create', function (ApiRequest $req){
     //load rooms to create select-box
     $rooms = Room::all();
 
@@ -79,7 +79,7 @@ Route::post('booking/create', function (ApiRequest $req){
     return redirect()->to(url("booking/{$booking->id}/invite"));
 });
 
-Route::get('booking', function (){
+Route::get('booking', function (ApiRequest $req){
     //from user >load> booking
     //which created_by user
     $user = User::with(['bookings' => function($query){
@@ -99,7 +99,7 @@ Route::get('booking', function (){
     return view('bookings.index', compact('bookings'));
 });
 /* GROUP */
-Route::get('group/create', function (){
+Route::get('group/create', function (ApiRequest $req){
     return view('groups.create');
 });
 
@@ -124,7 +124,7 @@ Route::post('group/create', function (ApiRequest $req){
     return $msg;
 });
 
-Route::get('group', function (){
+Route::get('group', function (ApiRequest $req){
     //list all groups
     //may let user JOIN INTO
     //may let user handle up-on group
@@ -132,7 +132,7 @@ Route::get('group', function (){
     return view('groups.index', compact('groups'));
 });
 
-Route::get('group/join', function (){
+Route::get('group/join', function (ApiRequest $req){
     //load group with user > group status
     //join (completely new) | pending (wait for host userA accept)
     $groups = Group::with(['group_user' => function($query){
@@ -177,7 +177,7 @@ Route::post('group/join', function (ApiRequest $req){
     return response()->json(compact('msg'));
 });
 
-Route::get('group/verify', function (){
+Route::get('group/verify', function (ApiRequest $req){
     //userA load group1, group2, group3,..
     //load all groups, which userA join-in
     //BUT in each group, just load user != userA
@@ -235,7 +235,7 @@ Route::post('group/verify', function (ApiRequest $req){
     return response()->json(compact('msg'));
 });
 /* BOOKING */
-Route::get('booking/{booking}/invite', function(Booking $booking){
+Route::get('booking/{booking}/invite', function(Booking $booking, ApiRequest $req){
 //    dd($booking_id);
     //invite user to booking
     //base on group123 where userA join-in
@@ -282,7 +282,7 @@ Route::post('booking/{id}/invite', function(ApiRequest $req){
 /**
  * @warn ONLY allow booking user JOINED
  */
-Route::get('booking/{booking}', function(Booking $booking){
+Route::get('booking/{booking}', function(Booking $booking, ApiRequest $req){
 //    dd($booking);
     //check user ---related to ---booking
     $bookingUser = BookingUser::where([
