@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<<<<<<< HEAD
     <h1>Invite</h1>
     <ul class="list-group">
         @foreach($groups as $group)

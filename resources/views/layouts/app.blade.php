@@ -11,10 +11,10 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="/css/app.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/main.css">
+    <link href="{{ url('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url('css/main.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-    <link rel="stylesheet" href="http://getbootstrap.com/assets/css/docs.min.css">
+    <link rel="stylesheet" href="{{ url('css/docs.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" />
     <!-- Scripts -->
 </head>
@@ -75,7 +75,7 @@
         </div>
     </nav>
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
+    <script src="{{ url('js/app.js') }}"></script>
     {{--<script src="{{ url('js/json-highlight.js') }}"></script>--}}
     <div class="container main-content">
         <div class="f_overlay">
