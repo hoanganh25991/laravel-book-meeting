@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Invite</h1>
+    <h1 class="text-center">Invite Team Member</h1>
+    <hr>
     <ul class="list-group">
         @foreach($groups as $group)
             <li class="list-group-item">

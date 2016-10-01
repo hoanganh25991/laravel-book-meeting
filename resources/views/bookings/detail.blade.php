@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <pre>{{ $booking }}</pre>
+    <h1 class="text-center">{{ $booking->description }}</h1>
+    <hr>
+    <p>{{ $booking }}</p>
     <ul>Invited users list
         @foreach($bookingUsers as $bookingUser)
             <li>

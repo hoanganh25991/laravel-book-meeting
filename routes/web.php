@@ -234,6 +234,14 @@ Route::post('group/verify', function (ApiRequest $req){
 
     return response()->json(compact('msg'));
 });
+
+Route::get('group/{group_id}', function($group_id, ApiRequest $req){
+    $group = Group::with('userCreated')
+                    ->where('id', $group_id)
+                    ->first();
+    
+    return view('groups.detail', compact('group'));
+});
 /* BOOKING */
 Route::get('booking/{booking}/invite', function(Booking $booking, ApiRequest $req){
 //    dd($booking_id);

@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>{{ Auth::user()->name }}'s Bookings</h1>
+    <h1 class="text-center">{{ Auth::user()->name }}'s Bookings</h1>
+    <hr>
     <ul class="list-group">
     @foreach($bookings as $booking)
         <li class="list-group-item">

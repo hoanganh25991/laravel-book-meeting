@@ -134,7 +134,8 @@ Miscellaneous:
 + ~~invite > load USER from groups~~
 + ~~booking/X > detail~~
 + ~~fix bug booking/x/invite, where not exist~~
-+ we need group/X > detail
++ ~~we need group/X > detail~~
++ image upload
 + check basic-function work SMOOTH
 + check basic-function work EASY to USE
 + check UI look simple

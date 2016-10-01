@@ -40,4 +40,8 @@ class Group extends Model
 //        return $this->belongsToMany(User::class, 'group_user', 'user_id', 'group_id');
         return $this->belongsToMany(User::class);
     }
+    
+    public function userCreated(){
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 }
