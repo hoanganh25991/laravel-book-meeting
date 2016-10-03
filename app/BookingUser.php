@@ -20,4 +20,5 @@ class BookingUser extends Model
     public function booking(){
         return $this->hasOne(Booking::class, 'id', 'booking_id');
     }
+
 }

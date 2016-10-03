@@ -37,4 +37,9 @@ class Booking extends Model
     public function autoJoinInMeeting($booking){
 
     }
+
+
+    public function createdBy(){
+        return $this->hasOne(User::class, 'id', 'created_by');
+    }
 }

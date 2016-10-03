@@ -62,25 +62,26 @@ Route::get('booking/create', function (ApiRequest $req){
 
 Route::post('booking/create', 'BookingController@createBooking');
 
-Route::get('booking', function (ApiRequest $req){
-    //from user >load> booking
-    //which created_by user
-    $user = User::with(['bookings' => function($query){
-                    $query->where('created_by', Auth::id());
-                }])
-                ->where('id', Auth::id())
-                ->first()
-                ;
-//    $bookings = [];
-//    if(!empty($user))
-//        $bookings = $user->bookings;
-
-    !empty($user) ?
-        $bookings = $user->bookings :
-        $bookings = [];
-
-    return view('bookings.index', compact('bookings'));
-});
+//Route::get('booking', function (ApiRequest $req){
+//    //from user >load> booking
+//    //which created_by user
+//    $user = User::with(['bookings' => function($query){
+//                    $query->where('created_by', Auth::id());
+//                }])
+//                ->where('id', Auth::id())
+//                ->first()
+//                ;
+////    $bookings = [];
+////    if(!empty($user))
+////        $bookings = $user->bookings;
+//
+//    !empty($user) ?
+//        $bookings = $user->bookings :
+//        $bookings = [];
+//
+//    return view('bookings.index', compact('bookings'));
+//});
+Route::get('booking', 'BookingController@loadAllBookings');
 /* GROUP */
 Route::get('group/create', function (ApiRequest $req){
     return view('groups.create');
