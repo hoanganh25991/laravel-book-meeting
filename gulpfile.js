@@ -1,8 +1,6 @@
 const elixir = require('laravel-elixir');
 
 require('laravel-elixir-vue');
-require('laravel-elixir-browserify');
-require('laravel-elixir-stylus');
 
 /*
  |--------------------------------------------------------------------------
@@ -16,9 +14,6 @@ require('laravel-elixir-stylus');
  */
 
 elixir(mix => {
-    mix.sass('app.scss')
-        .webpack('app.js')
-	    .webpack('rooms_load.js')
-    ;
-
+	mix.sass('app.scss')
+	   .webpack('app.js');
 });

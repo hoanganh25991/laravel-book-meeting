@@ -133,5 +133,9 @@
         </div>
     </div>
     @yield('out-box')
+    <example></example>
+    <scheduler></scheduler>
+    <script src="{{ url('js/aui-min.js') }}"></script>
+    <script src="{{ url('js/app.js') }}"></script>
 </body>
 </html>
