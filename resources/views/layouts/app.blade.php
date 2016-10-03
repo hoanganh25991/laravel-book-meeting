@@ -57,7 +57,7 @@
 
                             <ul class="dropdown-menu" role="menu">
                                 <li>
-                                    <a href="{{ url('/logout') }}"
+                                    <a href="{{ url('logout') }}"
                                         onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
                                         Logout
@@ -133,9 +133,9 @@
         </div>
     </div>
     @yield('out-box')
-    <example></example>
-    <scheduler></scheduler>
+    {{--<example></example>--}}
+    {{--<scheduler></scheduler>--}}
     <script src="{{ url('js/aui-min.js') }}"></script>
-    <script src="{{ url('js/app.js') }}"></script>
+    {{--<script src="{{ url('js/app.js') }}"></script>--}}
 </body>
 </html>

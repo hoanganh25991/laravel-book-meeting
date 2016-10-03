@@ -60,24 +60,7 @@ Route::get('booking/create', function (ApiRequest $req){
     return view('bookings.create', compact('rooms'));
 });
 
-Route::post('booking/create', function (ApiRequest $req){
-    $bookingInfo = $req->get('booking');
-    $booking = new Booking($bookingInfo);
-    $booking->created_by = Auth::id();
-
-    $msg = '';
-    try{
-        DB::beginTransaction();
-        $booking->save();
-        $msg .= 'success';
-        flash($msg, 'success');
-    }catch(\Exception $e){
-        $msg .= $e->getMessage();
-        flash($msg, 'warning');
-    }
-    
-    return redirect()->to(url("booking/{$booking->id}/invite"));
-});
+Route::post('booking/create', 'BookingController@createBooking');
 
 Route::get('booking', function (ApiRequest $req){
     //from user >load> booking
@@ -103,26 +86,7 @@ Route::get('group/create', function (ApiRequest $req){
     return view('groups.create');
 });
 
-Route::post('group/create', function (ApiRequest $req){
-    $groupInfo = $req->get('group');
-    $group = new Group($groupInfo);
-    $group->created_by = Auth::id();
-
-    $msg = '';
-    try{
-        //transaction to work with group_user
-        //if group_user FAILED to update record
-        //group !saved
-        /* @warn NOT GOOD */
-        DB::beginTransaction();
-        $group->save();
-        $msg .= 'success';
-    }catch(\Exception $e){
-        $msg .= $e->getMessage();
-    };
-
-    return $msg;
-});
+Route::post('group/create', 'GroupController@createGroup');
 
 Route::get('group', function (ApiRequest $req){
     //list all groups
@@ -243,28 +207,7 @@ Route::get('group/{group_id}', function($group_id, ApiRequest $req){
     return view('groups.detail', compact('group'));
 });
 /* BOOKING */
-Route::get('booking/{booking}/invite', function(Booking $booking, ApiRequest $req){
-//    dd($booking_id);
-    //invite user to booking
-    //base on group123 where userA join-in
-    //load userBCD who not invited
-    //to prevent ERROR when $booking not exist
-    //let $booking_id COME FROM where check
-    $booking_id = $booking->id;
-    $groups = Group::with(['users' => function($query) use($booking_id){
-                            $query->notInvited($booking_id);
-                        }])
-                        ->whereHas('group_user', function($query){
-                            $query->where([
-                                ['user_id', Auth::id()],
-                                ['status', 'joined']
-                            ]);
-                        })
-                        ->get()
-                        ;
-
-    return view('bookings.invite', compact('groups', 'booking_id'));
-});
+Route::get('booking/{booking}/invite', 'BookingController@inviteTeamMember');
 
 Route::post('booking/{id}/invite', function(ApiRequest $req){
     $user_id = $req->get('user_id');

@@ -40,4 +40,14 @@ class User extends Authenticatable
             $query->where('booking_id', $booking_id);
         });
     }
+    
+    public function groups(){
+        return $this->belongsToMany(Group::class);
+    }
+
+    public function bookingX($booking_id){
+        return $this->belongsToMany(Booking::class)->wherePivot('booking_id', '=', $booking_id)->first();
+    }
+
+
 }

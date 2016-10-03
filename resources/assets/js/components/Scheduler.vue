@@ -8,7 +8,7 @@
 </template>
 <style>
     body{
-        background-color:#ff0000;
+        /*background-color:#ff0000;*/
     }
     /* hey i have change sth */
     /* please update */
