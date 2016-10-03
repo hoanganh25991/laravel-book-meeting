@@ -53,14 +53,9 @@ Route::get('room', function(ApiRequest $req){
     return view('rooms.index', compact('rooms'));
 });
 /* BOOKING */
-Route::get('booking/create', function (ApiRequest $req){
-    //load rooms to create select-box
-    $rooms = Room::all();
+Route::get('booking/create', 'BookingController@createGet');
 
-    return view('bookings.create', compact('rooms'));
-});
-
-Route::post('booking/create', 'BookingController@createBooking');
+Route::post('booking/create', 'BookingController@createPost');
 
 //Route::get('booking', function (ApiRequest $req){
 //    //from user >load> booking

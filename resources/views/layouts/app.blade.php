@@ -137,5 +137,6 @@
     {{--<scheduler></scheduler>--}}
     <script src="{{ url('js/aui-min.js') }}"></script>
     {{--<script src="{{ url('js/app.js') }}"></script>--}}
+    @yield('script_lib')
 </body>
 </html>

@@ -8,6 +8,7 @@ use App\BookingUser;
 use App\Booking;
 use Auth;
 use App\User;
+use App\Room;
 
 class BookingController extends Controller
 {
@@ -36,7 +37,7 @@ class BookingController extends Controller
      * 2. auto join userA into booking_user
      * (this just a default action, userA may create BUT NOT join in the meeting)
      */
-    public function createBooking(ApiRequest $req){
+    public function createPost(ApiRequest $req){
         $bookingInfo = $req->get('booking');
         $booking = new Booking($bookingInfo);
         $booking->created_by = Auth::id();
@@ -55,6 +56,13 @@ class BookingController extends Controller
         }
 
         return redirect()->to(url("booking/{$booking->id}/invite"));
+    }
+    
+    public function createGet(ApiRequest $req){
+        //load rooms to create select-box
+        $rooms = Room::all();
+
+        return view('bookings.create', compact('rooms'));
     }
 
     public function inviteTeamMember(Booking $booking, ApiRequest $req){

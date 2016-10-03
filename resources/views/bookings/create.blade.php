@@ -20,23 +20,36 @@
 
         <div class="form-group">
             <div class="input-group">
-                <span class="input-group-addon">Date</span>
-                <input id="bookingDate" name="booking[date]">
+                <span class="input-group-addon">Start</span>
+                <input id="bookingStartDate" name="booking[start_date]">
                 <script id="footer-template" type="text/x-kendo-template">
                     Today - #: kendo.toString(data, "d") #
                 </script>
                 <script>
-                    $(document).ready(function(){
-                        // create DateTimePicker from input HTML element
-                        $("#bookingDate").kendoDateTimePicker({
-                            format: "yyyy/MM/dd HH:mm:ss",
-                            value: new Date(),
-                            footer: kendo.template($("#footer-template").html())
-                        });
+                    $('#bookingStartDate').kendoDateTimePicker({
+                        format: "yyyy/MM/dd HH:mm",
+                        value: new Date(),
+                        footer: kendo.template($("#footer-template").html())
                     });
                 </script>
             </div>
-            <small class="form-text text-muted">Pick up booking date</small>
+            <small class="form-text text-muted">Pick up booking start date</small>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">End</span>
+                <input id="bookingEndDate" name="booking[end_date]">
+                <script id="footer-template" type="text/x-kendo-template">
+                    Today - #: kendo.toString(data, "d") #
+                </script>
+                <script>
+                    $('#bookingEndDate').kendoDateTimePicker({
+                        footer: kendo.template($("#footer-template").html())
+                    });
+                </script>
+            </div>
+            <small class="form-text text-muted">Pick up booking end date</small>
         </div>
 
         <div class="form-group">
@@ -54,4 +67,30 @@
             <input type="submit" name="submitBooking" value="Create" class="btn btn-info pull-right">
         </div>
     </form>
+    <script>
+        $(document).ready(function(){
+            // create DateTimePicker from input HTML element
+            let startDatePicker = $("#bookingStartDate");
+            let endDatePicker = $("#bookingEndDate");
+
+            let haveSuggested = false;
+
+            startDatePicker.on('change', function(){
+                !haveSuggested ? (function(){
+                    //get data from startDatePicker
+                    let startData = startDatePicker.data('kendoDateTimePicker');
+                    //extract what userA choose
+                    let startDate = new Date(startData.value());
+                    //suggest end date (1h later)
+                    let endDate = startDate.getTime() + 60 * 60 * 1000;
+                    //update ui
+                    endDatePicker.kendoDateTimePicker({
+                        format: "yyyy/MM/dd HH:mm",
+                        value: new Date(endDate)
+                    });
+                    haveSuggested = true;
+                })() : false;
+            });
+        });
+    </script>
 @endsection
