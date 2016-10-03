@@ -3,8 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\BookingCreated;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\BookingUser;
 use Auth;
@@ -30,14 +28,14 @@ class RegisHostAsMember
     {
         $booking = $event->booking;
       
-        $userBooking = new BookingUser([
+        $bookingUser = new BookingUser([
             'user_id' => Auth::id(),
             'booking_id' => $booking->id,
             'status' => 'joined'
         ]);
         
         try{
-            $userBooking->save();
+            $bookingUser->save();
         }catch(\Exception $e){
             dd($e);
         }

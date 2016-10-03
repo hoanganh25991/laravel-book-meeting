@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class BookingUser extends Model
 {
     protected $table = 'booking_user';
-    protected $fillable = ['user_id', 'booking_id'];
+    protected $guarded = ['id'];
 
     public function bookings(){
         return $this->hasMany(Booking::class, 'id', 'booking_id');

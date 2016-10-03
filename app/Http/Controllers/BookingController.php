@@ -65,7 +65,7 @@ class BookingController extends Controller
         return view('bookings.create', compact('rooms'));
     }
 
-    public function inviteTeamMember(Booking $booking, ApiRequest $req){
+    public function inviteTeamMemberGet(Booking $booking, ApiRequest $req){
         /*
          * load all team member from group which this guide joined in
          */
@@ -110,5 +110,51 @@ class BookingController extends Controller
             });
         });
         dd($groups);
+    }
+    
+    public function inviteTeamMemberPost(ApiRequest $req){
+        $user_id = $req->get('user_id');
+        $booking_id = $req->get('booking_id');
+        $user_booking = new BookingUser([
+            'user_id' => $user_id,
+            'booking_id' => $booking_id
+        ]);
+
+        $msg = '';
+        try{
+            $user_booking->save();
+            $msg .= 'success';
+        }catch(\Exception $e){
+            $msg .= $e->getMessage();
+
+            return response($msg, 500, ['Content-Type' => 'application/json']);
+        }
+
+        return response($msg, 200, ['Content-Typ' => 'application/json']);
+    }
+    
+    public function detail(Booking $booking, ApiRequest $req){
+//    dd($booking);
+        //check user ---related to ---booking
+        $bookingUser = BookingUser::where([
+            ['booking_id', $booking->id],
+            ['user_id', Auth::id()]
+        ])
+            ->first()
+        ;
+//    dd($bookingUser);
+        if(empty($bookingUser)){
+            return redirect()->route('home');
+        }
+
+        /* load users related to BOOKING */
+        $bookingUsers = BookingUser::with('user')
+            ->where([
+                ['booking_id', $booking->id],
+                ['user_id', '!=', Auth::id()]
+            ])
+            ->get();
+
+        return view('bookings.detail', compact('booking', 'bookingUsers'));
     }
 }

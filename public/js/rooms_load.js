@@ -37,7 +37,7 @@ function handleFile(e){
 		let btnLoad = document.querySelector('#btnLoad');
 		btnLoad.addEventListener('click', ()=>{
 			$.post({
-				url: '/rooms/load',
+				url: '',
 				data: {
 					rooms: wbJsonStr
 				},
