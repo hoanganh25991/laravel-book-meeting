@@ -47,7 +47,7 @@ class Group extends Model
         return $this->hasMany(GroupUser::class, 'group_id', 'id');
     }
     
-    public function pivot(){
+    public function pivotAtUserX(){
         return $this->hasOne(GroupUser::class, 'group_id', 'id');
     }
 }
