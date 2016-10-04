@@ -1,10 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    {{--<h1><strong>Group</strong>-create</h1>--}}
-    {{--<hr>--}}
     <h1>New Group</h1>
-    <form action="/group/create" method="POST">
+    <form action="{{ url('group/create') }}" method="POST">
         <div class="form-group">
             <div class="input-group">
                 <span class="input-group-addon">name</span>
