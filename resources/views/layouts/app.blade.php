@@ -78,34 +78,7 @@
     <div class="container main-content">
         <div class="f_overlay">
             @include('flash::message')
-            <script>
-            $(document).ready(()=>{
-                let f_overlay = $('.f_overlay');
-                let alertDivArr = f_overlay.find('.alert');
-                let flashDiv;
-                if(alertDivArr.length == 0){
-                    flashDiv = $('<div class="alert alert-info"></div>');
-                    flashDiv.appendTo(f_overlay);
-                    flashDiv.addClass('hidden');
-                }else{
-                    flashDiv = $('.alert');
-                }
-
-                let flashDivClass = flashDiv.attr('class');
-                let isImportantMsg = flashDivClass.includes('alert-important');
-
-                let waitFor = 3000;
-                let interval = setInterval(function(){
-                    let animation = 'animated fadeOutRight';
-                    if(isImportantMsg){
-                        animation = '';
-                    }
-
-                    flashDiv.addClass(animation);
-                    clearInterval(interval);
-                }, waitFor);
-            });
-            </script>
+            <script src="{{ url('js/load-flash.js') }}"></script>
         </div>
         <div class="row">
             <div class="col-md-8 col-md-offset-2">

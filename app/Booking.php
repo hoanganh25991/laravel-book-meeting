@@ -29,4 +29,12 @@ class Booking extends Model
     public function usersWithStatus(){
         return $this->belongsToMany(User::class)->withPivot('status');
     }
+
+    public function room(){
+        return $this->belongsTo(Room::class, 'room_id');
+    }
+
+//    public function room(){
+//        return $this->hasOne(Room::class, 'id', 'room_id');
+//    }
 }

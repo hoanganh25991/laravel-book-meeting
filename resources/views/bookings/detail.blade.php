@@ -5,10 +5,11 @@
         <div class="col-md-5">
             <div class="panel panel-default">
                 <h1 class="panel-heading">Booking Detail
-                    <a href='{{ url("booking/{$booking->id}/edit") }}' class="small fa fa-pencil pull-right"></a>
+                    @if($booking->created_by == Auth::id())
+                        <a href='{{ url("booking/{$booking->id}/edit") }}' class="small fa fa-pencil pull-right"></a>
+                    @endif
                 </h1>
                 @include('partials.booking-info')
-                {{--<div class="panel-footer"></div>--}}
             </div>
         </div>
         <div class="col-md-7">
@@ -34,29 +35,33 @@
             </div>
         </div>
     </div>
-    <div class="panel panel-warning">
-        <h1 class="panel-heading">Danger zone</h1>
-        <div class="panel-body">
-            <p>fjklasjdf aksdfjlas flaskfjla lkasjflaks f klasjdfl</p>
-            <a class="btn btn-danger"
-               id="btnDelBooking"
-               booking-id="{{ $booking->id }}"
-               booking-description="{{ $booking->description }}"
-            >Delete</a>
-            <form action='{{ url("booking/$booking->id/delete") }}' method="POST" id="delBookingForm"></form>
+    {{--danger zone > delete booking--}}
+    @if($booking->created_by == Auth::id())
+        <div class="panel panel-warning">
+            <h1 class="panel-heading">Danger zone</h1>
+            <div class="panel-body">
+                <p>fjklasjdf aksdfjlas flaskfjla lkasjflaks f klasjdfl</p>
+                <a class="btn btn-danger"
+                   id="btnDelBooking"
+                   booking-id="{{ $booking->id }}"
+                   booking-description="{{ $booking->description }}"
+                >Delete</a>
+                <form action='{{ url("booking/$booking->id/delete") }}' method="POST" id="delBookingForm"></form>
+            </div>
         </div>
-        <script src="{{ url('js/flash.js') }}"></script>
-        <script>
-            $(document).ready(function(){
-                let btnDelBooking = $('#btnDelBooking');
-                let booking_id = btnDelBooking.attr('booking-id');
-                let booking_description = btnDelBooking.attr('booking-description');
-//                let flashDiv = $('.alert');
-                let msg = `Do you want to delete <strong>${booking_description}</strong>`;
-//                let f_overlay = flashDiv.parent();
-//                console.log(f_overlay);
-                let userActionDiv = $('<div class="modal fade"></div>');
-                userActionDiv.html(`
+    @endif
+    <script src="{{ url('js/flash.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            let btnDelBooking = $('#btnDelBooking');
+            //                let booking_id = btnDelBooking.attr('booking-id');
+            let booking_description = btnDelBooking.attr('booking-description');
+            //                let flashDiv = $('.alert');
+            let msg = `Do you want to delete <strong>${booking_description}</strong>`;
+            //                let f_overlay = flashDiv.parent();
+            //                console.log(f_overlay);
+            let userActionDiv = $('<div class="modal fade"></div>');
+            userActionDiv.html(`
                     <div class="modal-dialog">
                          <div class="panel panel-danger">
                             <h2 class="panel-heading">Do you want to ${msg}</h2>
@@ -70,45 +75,31 @@
                     </div>
                 `);
 
-                let userActionBinded = false;
+            let userActionBinded = false;
 
-                userActionDiv.on('shown.bs.modal', function(){
-//                        console.log($('#userAction').find('a'));
-                    if(userActionBinded){
-                        return;
-                    }
-                    userActionBinded = true;
-                    $('#userAction').find('a').each(function(index, val){
-//                        console.log(val);
-                        let btn = $(val);
-                        btn.on('click', function(){
-                            let userAction = btn.text();
-                            console.log(userAction);
+            userActionDiv.on('shown.bs.modal', function(){
+                //                        console.log($('#userAction').find('a'));
+                if(userActionBinded){
+                    return;
+                }
+                userActionBinded = true;
+                $('#userAction').find('a').each(function(index, val){
+                    //                        console.log(val);
+                    let btn = $(val);
+                    btn.on('click', function(){
+                        let userAction = btn.text();
+                        console.log(userAction);
 
-                            if(userAction == 'YES'){
-                                {{--$.post({--}}
-                                    {{--url: '{{ url("booking/{$booking->id}/delete") }}',--}}
-                                    {{--url: '{{ url("booking/{$booking->id}/delete") }}',--}}
-                                    {{--success(res){--}}
-                                        {{--console.log(res);--}}
-                                        {{--flash(`${res.msg}`);--}}
-                                    {{--},--}}
-                                    {{--error(res){--}}
-                                        {{--console.log(res);--}}
-                                        {{--flash(`${res.msg}`, 'warning');--}}
-                                    {{--}--}}
-                                {{--});--}}
-                                {{--userActionDiv.modal('hide');--}}
-                                $('#delBookingForm').submit();
-                            }
-                        });
+                        if(userAction == 'YES'){
+                            $('#delBookingForm').submit();
+                        }
                     });
                 });
-
-                btnDelBooking.on('click', function(){
-                    userActionDiv.modal();
-                });
             });
-        </script>
-    </div>
+
+            btnDelBooking.on('click', function(){
+                userActionDiv.modal();
+            });
+        });
+    </script>
 @endsection

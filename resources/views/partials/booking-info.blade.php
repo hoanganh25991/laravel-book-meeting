@@ -9,7 +9,7 @@
     <dd>{{ $booking->end_date }}</dd>
 
     <dt>Room</dt>
-    <dd>{{ $booking->end_date }}</dd>
+    <dd>{{ $booking->room->name }}</dd>
 </dl>
 
 

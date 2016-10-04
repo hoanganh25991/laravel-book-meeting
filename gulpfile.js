@@ -17,5 +17,6 @@ elixir(mix => {
 	mix.sass('app.scss')
 	    .webpack('app.js')
 		.webpack('flash.js')
+		.webpack('load-flash.js')
 		;
 });
