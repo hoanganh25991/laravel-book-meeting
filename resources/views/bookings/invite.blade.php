@@ -29,7 +29,6 @@
             </li>
         @endforeach
     </ul>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="{{ url('js/flash.js') }}"></script>
     <script>
         $('.usersList').on('click', 'a.my-addon', function(){
@@ -49,6 +48,7 @@
                 return;
             }
             if(status == 'pending'){
+                console.log(status);
                 flash(`Waiting for <strong>${user_name}</strong> accepted`);
                 return;
             }

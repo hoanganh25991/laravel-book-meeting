@@ -21,8 +21,13 @@ pre{
 .f_overlay{
     position: fixed;
     right: 0;
-    width: 350px;
+    /*width: 350px;*/
+    /*width: 10%;*/
     z-index: 15;
+}
+
+.f_overlay .alert{
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
 
 .my-addon{

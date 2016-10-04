@@ -1,7 +1,7 @@
 let endAnimationSignal = 'animationend';
 let animation = 'fadeOutRight';
-let flashDiv = $('.alert');
 let flash = function(msg, level){
+	let flashDiv = $('.alert');
 	level = level || 'info';
 
 	flashDiv.html(msg);

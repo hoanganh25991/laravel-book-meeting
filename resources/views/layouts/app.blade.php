@@ -74,49 +74,39 @@
             </div>
         </div>
     </nav>
+    <script src="{{ url('js/app.js') }}"></script>
     <div class="container main-content">
         <div class="f_overlay">
-            {{--@include('flash::message')--}}
-            @if (session()->has('flash_notification.overlay'))
-                @include('flash::modal', [
-                    'modalClass' => 'flash-modal',
-                    'title'      => session('flash_notification.title'),
-                    'body'       => session('flash_notification.message')
-                ])
-            @else
-                <div class="alert alert-{{ session('flash_notification.level') }} {{ session()->has('flash_notification.important') ? 'alert-important' : '' }}"
-                >
-                    @if(session()->has('flash_notification.important'))
-                        <button type="button"
-                                class="close"
-                                data-dismiss="alert"
-                                aria-hidden="true"
-                        >&times;</button>
-                    @endif
-
-                    {!! session('flash_notification.message') !!}
-                </div>
-            @endif
+            @include('flash::message')
             <script>
-                (function(){
-                    let flashMsg = document.querySelector('div.alert');
-                    if(!flashMsg){
-                        return false;
-                    }
-                    let flashMsgClass = flashMsg.getAttribute('class');
-                    let isImportantMsg = flashMsgClass.includes('alert-important');
+            $(document).ready(()=>{
+                let f_overlay = $('.f_overlay');
+                let alertDivArr = f_overlay.find('.alert');
+                let flashDiv;
+                if(alertDivArr.length == 0){
+                    flashDiv = $('<div class="alert alert-info"></div>');
+                    flashDiv.appendTo(f_overlay);
+                    flashDiv.addClass('hidden');
+                }else{
+                    flashDiv = $('.alert');
+                }
 
-                    let waitFor = 3000;
-                    let interval = setInterval(function(){
-                        if(!isImportantMsg){
-                            flashMsg.className += ' animated fadeOutRight';
-                        }
-                        clearInterval(interval);
-                    }, waitFor);
-                })();
+                let flashDivClass = flashDiv.attr('class');
+                let isImportantMsg = flashDivClass.includes('alert-important');
+
+                let waitFor = 3000;
+                let interval = setInterval(function(){
+                    let animation = 'animated fadeOutRight';
+                    if(isImportantMsg){
+                        animation = '';
+                    }
+
+                    flashDiv.addClass(animation);
+                    clearInterval(interval);
+                }, waitFor);
+            });
             </script>
         </div>
-        <script src="{{ url('js/app.js') }}"></script>
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
