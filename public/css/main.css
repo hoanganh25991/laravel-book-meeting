@@ -68,14 +68,13 @@ pre{
     /*min-height: 20px;*/
 }
 
-.dl-horizontal dt{
+@media (min-width: 768px) {
+    .dl-horizontal dt{
     width: 20%;
     /*margin-right: 0px;*/
-}
+    }
 
-.dl-horizontal dt{
-    width: 20%;
-}
-.dl-horizontal dd{
+    .dl-horizontal dd{
     margin-left: calc(20% + 20px);
+    }
 }
