@@ -5,7 +5,6 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 use DB;
-
 class Group extends Model
 {
     protected $fillable = ['name', 'description'];
@@ -42,5 +41,13 @@ class Group extends Model
     
     public function userCreated(){
         return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+    
+    public function groupUsers(){
+        return $this->hasMany(GroupUser::class, 'group_id', 'id');
+    }
+    
+    public function userStatus(){
+        return $this->hasOne(GroupUser::class, 'group_id', 'id');
     }
 }

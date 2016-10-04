@@ -50,7 +50,7 @@
         </div>
 
         <div class="form-group">
-            <input type="submit" name="submitBooking" value="Create" class="btn btn-info pull-right">
+            <button class="btn btn-info pull-right">Create</button>
         </div>
     </form>
     <script>

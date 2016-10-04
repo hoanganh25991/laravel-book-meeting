@@ -1,11 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
+    {{--<h1><strong>Group</strong>-create</h1>--}}
+    {{--<hr>--}}
+    <h1>New Group</h1>
     <form action="/group/create" method="POST">
-        <label for="">name</label>
-        <input type="text" name="group[name]">
-        <label for="">description</label>
-        <input type="text" name="group[description]">
-        <input type="submit" name="submit" value="submit">
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">name</span>
+                <input type="text" name="group[name]" class="form-control">
+            </div>
+            <small class="form-text text-muted">Group name</small>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">description</span>
+                <input type="text" name="group[description]" class="form-control">
+            </div>
+            <small class="form-text text-muted">Group description</small>
+        </div>
+
+        <diV class="form-group">
+            <button class="btn btn-info pull-right">Create</button>
+        </diV>
     </form>
 @endsection

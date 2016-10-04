@@ -67,44 +67,24 @@ class BookingController extends Controller
 
     public function inviteTeamMemberGet(Booking $booking, ApiRequest $req){
         /*
-         * load all team member from group which this guide joined in
-         */
-//        $booking_id = $booking->id;
-//        $groups = Group::with(['users' => function($query) use($booking_id){
-//            $query->notInvited($booking_id);
-//        }])
-//            ->whereHas('group_user', function($query){
-//                $query->where([
-//                    ['user_id', Auth::id()],
-//                    ['status', 'joined']
-//                ]);
-//            })
-//            ->get()
-//        ;
-//
-//        return view('bookings.invite', compact('groups', 'booking_id'));
-        /*
          * from userA, load groups he belongsToMany
          * from each group, load all users, also belongsToMany
          *
          * then filter back status of each user in booking_user
          */
-        $query = User::with(['groups.users.bookings' => function($bookings) use($booking){
-                        $bookings->wherePivot('booking_id', '=', $booking->id)->withPivot('status')->first();
+        $userA = User::with(['groups.users.bookingUsers' => function($bookingUser) use($booking){
+                        $bookingUser->where('booking_id', $booking->id)->first();
                     }])
-                    ->where('id', Auth::id())
-                    ->first()
+                    ->find(Auth::id())
                     ;
-        $groups = $query->get();
-        dd($groups);
+        $groups = $userA->groups;
 //        $groups = $query->get()->groups;
         $groups->map(function($group){
             $users = $group->users;
             $users->map(function($user){
                 $status = 'invite';
-                if(!empty($user->bookings)){
-                    $status = $user->bookings->pivot->status;
-                    return;
+                if(!empty($user->bookingUsers)){
+                    $status = $user->bookingUsers->status;
                 }
                 $user->attributes['booking_status'] = $status;
             });

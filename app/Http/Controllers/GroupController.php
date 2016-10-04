@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ApiRequest;
 use Auth;
 use App\Group;
-
+use App\GroupUser;
 
 class GroupController extends Controller
 {
@@ -16,26 +16,24 @@ class GroupController extends Controller
         $group = new Group($groupInfo);
         $group->created_by = Auth::id();
 
-        $msg = '';
-        try{
-            $group->save();
-            $msg .= 'success';
-        }catch(\Exception $e){
-            $msg .= $e->getMessage();
-        };
+        $group->save();
 
-        return $msg;
+        flash("<strong>{$group->name}</strong>-group: created", 'success');
+//        return redirect()->back();
+        return redirect()->to('group');
     }
 
     public function createGroupGet(ApiRequest $req){
         return view('groups.create');
     }
 
-    public function index(ApiRequest $req){
+    public function index(){
         //list all groups
         //may let user JOIN INTO
         //may let user handle up-on group
-        $groups = Group::all();
+        $groups = Group::with(['userStatus' => function($groupUser){
+            $groupUser->where('user_id', Auth::id());
+        }])->get();
         return view('groups.index', compact('groups'));
     }
     
