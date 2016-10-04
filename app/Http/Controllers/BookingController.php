@@ -203,11 +203,17 @@ class BookingController extends Controller{
         return redirect()->to('booking');
     }
 
-    public function editGet(){
-
+    public function editGet(Booking $booking){
+        $rooms = Room::all();
+        return view('bookings.edit')->with(compact('booking', 'rooms'));
     }
 
-    public function editPost(){
+    public function editPost(Booking $booking, ApiRequest $req){
+        $bookingInfo = $req->get('booking');
+        $booking->fill($bookingInfo);
+        $booking->save();
+        flash("<strong>{$booking->description}</strong> updated");
 
+        return redirect('booking');
     }
 }
