@@ -12,3 +12,4 @@
     <dd>{{ $booking->end_date }}</dd>
 </dl>
 
+
