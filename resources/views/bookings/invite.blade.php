@@ -21,9 +21,7 @@
                                    user-id="{{ $user->id }}"
                                    booking-id="{{ $booking_id }}"
                                    class="my-addon btn btn-info "
-                                >
-                                    {{ $user->booking_status }}
-                                </a>
+                                >{{ $user->booking_status }}</a>
                             </div>
                         </div>
                     @endforeach
@@ -32,19 +30,28 @@
         @endforeach
     </ul>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="{{ url('js/flash.js') }}"></script>
     <script>
         $('.usersList').on('click', 'a.my-addon', function(){
             let btn = $(this);
 //            console.log(btn.parent());
-            let userList = btn.parent();
             let user_id = btn.attr('user-id');
+            let user_name = btn.attr('user-name');
+
             let booking_id = btn.attr('booking-id');
             console.log(user_id);
 
             //flash message prepare
             //on success DO IT
-            let flashMsg = document.querySelector('div.alert');
-            let user_name = btn.attr('user-name');
+            let status = btn.text();
+            if(status == 'joined'){
+                flash(`<strong>${user_name}</strong> has joined`);
+                return;
+            }
+            if(status == 'pending'){
+                flash(`Waiting for <strong>${user_name}</strong> accepted`);
+                return;
+            }
             $.post({
                 url: '{{ url("booking/{$booking_id}/invite") }}',
                 data: {
@@ -53,12 +60,8 @@
                 },
                 success: function(res){
                     console.log(res);
-                    flashMsg.innerText = `Invited ${user_name}`;
-                    flashMsg.className = 'alert alert-info';
-                    $(flashMsg).fadeIn();
-                    $(flashMsg).delay(500).fadeOut();
-                    userList.delay(500).fadeOut();
-
+                    flash(`Invite sent to <strong>${user_name}</strong>`);
+                    btn.text('pending');
                 },
                 error: function(res){
                     console.log(res);

@@ -73,10 +73,10 @@ class BookingController extends Controller{
         Storage::put('booking', $booking);
         $userA = User::with([
             'groups.users' => function($user){
-                $user->with(['pivotAtBookingX' => function ($pivots){
+                $user->with(['pivotAtBookingX' => function ($pivot){
 //                    $booking = Storage::$instance['booking'];
                     $booking = Storage::get('booking');
-                    $pivots->where('booking_id', $booking->id)->first();
+                    $pivot->where('booking_id', $booking->id);
                 }])->where('users.id', '!=', Auth::id());
             }])->find(Auth::id());
 //        dd($userA);
@@ -98,6 +98,7 @@ class BookingController extends Controller{
                 $user->booking_status = $status;
             });
         });
+//        dd($groups);
         $booking_id = $booking->id;
         return view('bookings.invite')->with(compact('groups', 'booking_id'));
     }
@@ -107,7 +108,8 @@ class BookingController extends Controller{
         $booking_id = $req->get('booking_id');
         $user_booking = new BookingUser([
             'user_id' => $user_id,
-            'booking_id' => $booking_id
+            'booking_id' => $booking_id,
+            'status' => 'pending'
         ]);
 
         $msg = '';
