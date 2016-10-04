@@ -41,7 +41,7 @@ class User extends Authenticatable
     }
     
     public function groups(){
-        return $this->belongsToMany(Group::class);
+        return $this->belongsToMany(Group::class)->wherePivot('status', 'joined');
     }
 
     public function bookingX($booking_id){
@@ -59,4 +59,15 @@ class User extends Authenticatable
     public function pivotAtBookingX(){
         return $this->hasOne(BookingUser::class, 'user_id', 'id');
     }
+    
+//    public function scopeIsMember($query, $adminid){
+//        return $query->where('id', '!='. $adminid);
+//    }
+    public function scopeNotAdmin($query, $admin_id){
+        return $query->where('users.id', '!=', $admin_id);
+    }
+    
+//    public function scopeAddGroupStatus($query){
+//        return $query->withPivot('status');
+//    }
 }

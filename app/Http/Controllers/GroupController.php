@@ -78,17 +78,9 @@ class GroupController extends Controller
             'status' => 'pending'
         ]);
 
-        $msg = '';
-        try{
-            $groupUser->save();
-            $msg = 'success';
-        }catch(\Exception $e){
-            $msg .= $e->getMessage();
-            return response($msg, 500, [
-                'Content-Type' => 'application/json'
-            ]);
-        }
-        return response()->json(compact('msg'));
+        $groupUser->save();
+
+        return response()->json(['msg' => "success"]);
     }
     
     public function verifyGet(ApiRequest $req){
@@ -96,27 +88,47 @@ class GroupController extends Controller
         //load all groups, which userA join-in
         //BUT in each group, just load user != userA
         //AND only load group with status 'pending'
-        $groups = Group::with(['users' => function ($query){
-            //no need to load userA
-            $query->where('users.id', '!=', Auth::id());
-        }])
-            ->whereHas('group_user', function($query){
-                //group with status 'pending'
-                //group-user, where userB accepted
-                //no need to load here
-                $query->where('status', 'pending');
-            })
-            /* @warn ONLY load group by userA is WRONG */
-//                    ->where('created_by', Auth::id())
-//                    ->whereUserAJoinedIn
-            ->whereHas('group_user', function($query){
-                $query->where([
-                    ['user_id', Auth::id()],
-                    ['status', 'joined']
-                ]);
-            })
-            ->get();
+//        $groups = Group::with(['users' => function ($query){
+//            //no need to load userA
+//            $query->where('users.id', '!=', Auth::id());
+//        }])
+//            ->whereHas('group_user', function($query){
+//                //group with status 'pending'
+//                //group-user, where userB accepted
+//                //no need to load here
+//                $query->where('status', 'pending');
+//            })
+//            /* @warn ONLY load group by userA is WRONG */
+////                    ->where('created_by', Auth::id())
+////                    ->whereUserAJoinedIn
+//            ->whereHas('group_user', function($query){
+//                $query->where([
+//                    ['user_id', Auth::id()],
+//                    ['status', 'joined']
+//                ]);
+//            })
+//            ->get();
 //    dd($groups);
+        $groups = Group::with(['users' => function($user){
+            $admin_id = Auth::id();
+            $user->withPivot('status')->notAdmin($admin_id);
+        }])
+        ->where('created_by', Auth::id())->get();
+
+        $groups->each(function($group){
+            $users = $group->users;
+            $users->each(function($user){
+//                $status = 'accept';
+//                if(!empty($user->pivot->status)){
+//                    $status = $user->pivot->status;
+//                }
+                $status = $user->pivot->status;
+                if($status == 'pending')
+                    $status = 'accept';
+                $user->group_status = $status;
+            });
+        });
+//        dd($groups);
         return view('groups.verify', compact('groups'));
     }
     

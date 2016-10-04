@@ -9,7 +9,7 @@ use App\Booking;
 use Auth;
 use App\User;
 use App\Room;
-
+use BookingX;
 class BookingController extends Controller{
     /*
      * At homepage, user need to load ALL booking
@@ -68,11 +68,17 @@ class BookingController extends Controller{
          *
          * then filter back status of each user in booking_user
          */
+//        app()->bind('BookingX', $booking);
+//        Storage::$instance['booking'] = $booking;
+        Storage::put('booking', $booking);
         $userA = User::with([
-            'groups.users.pivotAtBookingX' => function ($pivots) use ($booking){
-                $pivots->where('booking_id', $booking->id)->first();
-            }
-        ])->find(Auth::id());
+            'groups.users' => function($user){
+                $user->with(['pivotAtBookingX' => function ($pivots){
+//                    $booking = Storage::$instance['booking'];
+                    $booking = Storage::get('booking');
+                    $pivots->where('booking_id', $booking->id)->first();
+                }])->where('users.id', '!=', Auth::id());
+            }])->find(Auth::id());
 //        dd($userA);
         $groups = $userA->groups;
 //        dd($groups);
@@ -80,6 +86,10 @@ class BookingController extends Controller{
         $groups->each(function ($group){
             $users = $group->users;
             $users->each(function ($user){
+//            $users->each(function ($user, $index) use($users){
+//                if($user->id == Auth::id()){
+//                    unset($users[$index]);
+//                }
                 $status = 'invite';
                 if(!empty($user->pivotAtBookingX)){
                     $status = $user->pivotAtBookingX->status;
