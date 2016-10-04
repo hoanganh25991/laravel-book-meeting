@@ -21,4 +21,12 @@ class Booking extends Model
     public function bookingXUser(){
         return $this->hasOne(BookingUser::class, 'booking_id', 'id');
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class);
+    }
+    
+    public function usersWithStatus(){
+        return $this->belongsToMany(User::class)->withPivot('status');
+    }
 }

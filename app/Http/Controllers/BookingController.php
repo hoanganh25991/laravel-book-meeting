@@ -149,38 +149,15 @@ class BookingController extends Controller{
         return response($msg, 200, ['Content-Typ' => 'application/json']);
     }
 
-    public function detail(Booking $booking, ApiRequest $req){
-//    dd($booking);
-        //check user ---related to ---booking
-        $bookingUser = BookingUser::where([
-            [
-                'booking_id',
-                $booking->id
-            ],
-            [
-                'user_id',
-                Auth::id()
-            ]
-        ])->first();
-//    dd($bookingUser);
-        if(empty($bookingUser)){
-            return redirect()->route('home');
-        }
-
-        /* load users related to BOOKING */
-        $bookingUsers = BookingUser::with('user')->where([
-            [
-                'booking_id',
-                $booking->id
-            ],
-            [
-                'user_id',
-                '!=',
-                Auth::id()
-            ]
-        ])->get();
-
-        return view('bookings.detail', compact('booking', 'bookingUsers'));
+    public function detail(Booking $booking){
+        $users = $booking->usersWithStatus;
+//        dd($users);
+        $users->each(function($user){
+            $status = $user->pivot->status;
+            $user->booking_status = $status;
+        });
+//        dd($users[0]->booking_status);
+        return view('bookings.detail', compact('booking', 'users'));
     }
 
     public function inviteVerifyGet(){

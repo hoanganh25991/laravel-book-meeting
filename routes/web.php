@@ -12,7 +12,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('booking/create', 'BookingController@createPost');
     Route::get('booking', 'BookingController@loadAllBookings');
     Route::get('booking/{booking}/invite', 'BookingController@inviteTeamMemberGet');
-    Route::post('booking/{id}/invite', 'BookingController@inviteTeamMemberPost');
+    Route::post('booking/{booking}/invite', 'BookingController@inviteTeamMemberPost');
     Route::get('booking/{booking}', 'BookingController@detail');
     Route::get('booking/verify', 'BookingController@inviteVerifyGet');
     Route::post('booking/verify', 'BookingController@inviteVerifyPost');
