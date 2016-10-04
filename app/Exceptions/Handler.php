@@ -32,6 +32,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if($exception instanceof AuthenticationException){
+            flash('Please login', 'info');
+        }
+        
         parent::report($exception);
     }
 

@@ -14,9 +14,9 @@ class ApiRequest extends FormRequest
      */
     public function authorize()
     {
-//        return true; //allow any body handle GET/POST
+        return true; //allow any body handle GET/POST
 //        return false; //only allow authorized
-        return !empty(Auth::id());
+//        return !empty(Auth::id());
     }
 
     /**

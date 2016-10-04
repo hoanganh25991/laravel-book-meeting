@@ -74,9 +74,6 @@
             </div>
         </div>
     </nav>
-    <!-- Scripts -->
-    <script src="{{ url('js/app.js') }}"></script>
-    {{--<script src="{{ url('js/json-highlight.js') }}"></script>--}}
     <div class="container main-content">
         <div class="f_overlay">
             {{--@include('flash::message')--}}
@@ -87,9 +84,7 @@
                     'body'       => session('flash_notification.message')
                 ])
             @else
-                <div class="alert
-                    alert-{{ session('flash_notification.level') }}
-                {{ session()->has('flash_notification.important') ? 'alert-important' : '' }}"
+                <div class="alert alert-{{ session('flash_notification.level') }} {{ session()->has('flash_notification.important') ? 'alert-important' : '' }}"
                 >
                     @if(session()->has('flash_notification.important'))
                         <button type="button"
@@ -135,6 +130,7 @@
     @yield('out-box')
     {{--<example></example>--}}
     {{--<scheduler></scheduler>--}}
+    <script src="{{ url('js/app.js') }}"></script>
     <script src="{{ url('js/aui-min.js') }}"></script>
     {{--<script src="{{ url('js/app.js') }}"></script>--}}
     @yield('script_lib')
