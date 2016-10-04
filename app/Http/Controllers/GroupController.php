@@ -31,9 +31,18 @@ class GroupController extends Controller
         //list all groups
         //may let user JOIN INTO
         //may let user handle up-on group
-        $groups = Group::with(['userStatus' => function($groupUser){
+        $groups = Group::with(['pivot' => function($groupUser){
             $groupUser->where('user_id', Auth::id());
         }])->get();
+        $groups->each(function($group){
+            $user_status = 'join';
+            $pivot = $group->pivot;
+            if(!empty($pivot))
+                $user_status = $pivot->status;
+//            $group->attributes['status'] = $status;
+            $group->user_status = $user_status;
+            unset($group->pivot);
+        });
         return view('groups.index', compact('groups'));
     }
     

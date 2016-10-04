@@ -10,8 +10,7 @@ use Auth;
 use App\User;
 use App\Room;
 
-class BookingController extends Controller
-{
+class BookingController extends Controller{
     /*
      * At homepage, user need to load ALL booking
      * 1. which he created
@@ -21,11 +20,8 @@ class BookingController extends Controller
         //look at booking_user
         //find out where user_id = userA & which userA accepted
         //BookingUser can load booking-info on each success row
-        $query = BookingUser::with('booking.createdBy')
-                    ->where('user_id', Auth::id())
-                    ->where('status', 'joined')
-                    ;
-        $bookings = $query->get()->map(function($bookingUser){
+        $query = BookingUser::with('booking.createdBy')->where('user_id', Auth::id())->where('status', 'joined');
+        $bookings = $query->get()->map(function ($bookingUser){
             return $bookingUser->booking;
         });
         dd($bookings);
@@ -57,7 +53,7 @@ class BookingController extends Controller
 
         return redirect()->to(url("booking/{$booking->id}/invite"));
     }
-    
+
     public function createGet(ApiRequest $req){
         //load rooms to create select-box
         $rooms = Room::all();
@@ -65,33 +61,37 @@ class BookingController extends Controller
         return view('bookings.create', compact('rooms'));
     }
 
-    public function inviteTeamMemberGet(Booking $booking, ApiRequest $req){
+    public function inviteTeamMemberGet(Booking $booking){
         /*
          * from userA, load groups he belongsToMany
          * from each group, load all users, also belongsToMany
          *
          * then filter back status of each user in booking_user
          */
-        $userA = User::with(['groups.users.bookingUsers' => function($bookingUser) use($booking){
-                        $bookingUser->where('booking_id', $booking->id)->first();
-                    }])
-                    ->find(Auth::id())
-                    ;
+        $userA = User::with([
+            'groups.users.pivotAtBookingX' => function ($pivots) use ($booking){
+                $pivots->where('booking_id', $booking->id)->first();
+            }
+        ])->find(Auth::id());
+//        dd($userA);
         $groups = $userA->groups;
+//        dd($groups);
 //        $groups = $query->get()->groups;
-        $groups->map(function($group){
+        $groups->each(function ($group){
             $users = $group->users;
-            $users->map(function($user){
+            $users->each(function ($user){
                 $status = 'invite';
-                if(!empty($user->bookingUsers)){
-                    $status = $user->bookingUsers->status;
+                if(!empty($user->pivotAtBookingX)){
+                    $status = $user->pivotAtBookingX->status;
                 }
-                $user->attributes['booking_status'] = $status;
+//                $user->attributes['booking_status'] = $status;
+                $user->booking_status = $status;
             });
         });
-        dd($groups);
+        $booking_id = $booking->id;
+        return view('bookings.invite')->with(compact('groups', 'booking_id'));
     }
-    
+
     public function inviteTeamMemberPost(ApiRequest $req){
         $user_id = $req->get('user_id');
         $booking_id = $req->get('booking_id');
@@ -112,28 +112,37 @@ class BookingController extends Controller
 
         return response($msg, 200, ['Content-Typ' => 'application/json']);
     }
-    
+
     public function detail(Booking $booking, ApiRequest $req){
 //    dd($booking);
         //check user ---related to ---booking
         $bookingUser = BookingUser::where([
-            ['booking_id', $booking->id],
-            ['user_id', Auth::id()]
-        ])
-            ->first()
-        ;
+            [
+                'booking_id',
+                $booking->id
+            ],
+            [
+                'user_id',
+                Auth::id()
+            ]
+        ])->first();
 //    dd($bookingUser);
         if(empty($bookingUser)){
             return redirect()->route('home');
         }
 
         /* load users related to BOOKING */
-        $bookingUsers = BookingUser::with('user')
-            ->where([
-                ['booking_id', $booking->id],
-                ['user_id', '!=', Auth::id()]
-            ])
-            ->get();
+        $bookingUsers = BookingUser::with('user')->where([
+            [
+                'booking_id',
+                $booking->id
+            ],
+            [
+                'user_id',
+                '!=',
+                Auth::id()
+            ]
+        ])->get();
 
         return view('bookings.detail', compact('booking', 'bookingUsers'));
     }

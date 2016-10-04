@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use BookingUser;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -51,5 +50,13 @@ class User extends Authenticatable
 
     public function bookingUsers(){
         return $this->hasMany(BookingUser::class, 'user_id', 'id');
+    }
+
+    public function pivots(){
+        return $this->hasMany(BookingUser::class, 'user_id', 'id');
+    }
+    
+    public function pivotAtBookingX(){
+        return $this->hasOne(BookingUser::class, 'user_id', 'id');
     }
 }

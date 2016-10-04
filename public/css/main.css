@@ -1,10 +1,10 @@
-/*pre{*/
+pre{
     /*!*overflow: hidden;*!*/
-    /*white-space: pre-wrap;       !* css-3 *!*/
+    white-space: pre-wrap;       /* css-3 */
     /*overflow-y: auto;*/
     /*max-height: 100px;*/
     /*max-width: 350px;*/
-/*}*/
+}
 
 #bookingCreateForm div{
     input: 350px;
