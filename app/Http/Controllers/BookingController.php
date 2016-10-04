@@ -183,4 +183,31 @@ class BookingController extends Controller{
         $bookingUser->save();
         return response(['msg'=>'success'], 200,  ['Content-Type' => 'application/json']);
     }
+
+//    public function delete(Booking $booking){
+//        $bookingUsers = BookingUser::where('booking_id', $booking->id)->get();
+//        $bookingUsers->each(function($bookingUser){
+//            $bookingUser->delete();
+//        });
+//        $booking->delete();
+//        return response(['msg' => "<strong>{$booking->description}</strong> deleted"], 200, ['Content-Type' => 'application/json']);
+//    }
+
+    public function delete(Booking $booking){
+        $bookingUsers = BookingUser::where('booking_id', $booking->id)->get();
+        $bookingUsers->each(function($bookingUser){
+            $bookingUser->delete();
+        });
+        $booking->delete();
+        flash("<strong>{$booking->description}</strong> deleted", 'success');
+        return redirect()->to('booking');
+    }
+
+    public function editGet(){
+
+    }
+
+    public function editPost(){
+
+    }
 }

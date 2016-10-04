@@ -43,6 +43,7 @@
                booking-id="{{ $booking->id }}"
                booking-description="{{ $booking->description }}"
             >Delete</a>
+            <form action='{{ url("booking/$booking->id/delete") }}' method="POST" id="delBookingForm"></form>
         </div>
         <script src="{{ url('js/flash.js') }}"></script>
         <script>
@@ -56,12 +57,12 @@
 //                console.log(f_overlay);
                 let userActionDiv = $('<div class="modal fade"></div>');
                 userActionDiv.html(`
-                    <div class="modal-dialog modal-sm">
+                    <div class="modal-dialog">
                          <div class="panel panel-danger">
                             <h2 class="panel-heading">Do you want to ${msg}</h2>
                             <div class="panel-body" id="userAction">
                                 <div class="pull-right">
-                                    <a class="btn btn-danger">YES</a>
+                                    <a class="btn btn-danger" data-dismiss="modal">YES</a>
                                     <a class="btn btn-default" data-dismiss="modal">CANCEL</a>
                                 </div>
                             </div>
@@ -85,19 +86,20 @@
                             console.log(userAction);
 
                             if(userAction == 'YES'){
-                                $.post({
+                                {{--$.post({--}}
                                     {{--url: '{{ url("booking/{$booking->id}/delete") }}',--}}
-                                    url: '{{ url("booking/{$booking->id}/delete") }}',
-                                    success(res){
-                                        console.log(res);
-                                        flash(`${res.msg}`);
-                                    },
-                                    error(res){
-                                        console.log(res);
-                                        flash(`${res.msg}`, 'warning');
-                                    }
-                                });
-                                userActionDiv.modal('hide');
+                                    {{--url: '{{ url("booking/{$booking->id}/delete") }}',--}}
+                                    {{--success(res){--}}
+                                        {{--console.log(res);--}}
+                                        {{--flash(`${res.msg}`);--}}
+                                    {{--},--}}
+                                    {{--error(res){--}}
+                                        {{--console.log(res);--}}
+                                        {{--flash(`${res.msg}`, 'warning');--}}
+                                    {{--}--}}
+                                {{--});--}}
+                                {{--userActionDiv.modal('hide');--}}
+                                $('#delBookingForm').submit();
                             }
                         });
                     });
