@@ -20,11 +20,23 @@ class BookingController extends Controller{
         //look at booking_user
         //find out where user_id = userA & which userA accepted
         //BookingUser can load booking-info on each success row
-        $query = BookingUser::with('booking.createdBy')->where('user_id', Auth::id())->where('status', 'joined');
-        $bookings = $query->get()->map(function ($bookingUser){
-            return $bookingUser->booking;
+//        $query = BookingUser::with('booking.createdBy')->where('user_id', Auth::id())->where('status', 'joined');
+//        $bookings = $query->get()->map(function ($bookingUser){
+//            return $bookingUser->booking;
+//        });
+        $userA = User::with(['bookings' => function($booking){
+            $booking->withPivot('status');
+        }])->find(Auth::id());
+        $bookings = $userA->bookings;
+
+        $bookings->each(function($booking){
+            $status = $booking->pivot->status;
+            if($status == 'pending')
+                $status = 'join';
+            $booking->status = $status;
         });
-        dd($bookings);
+//        dd($bookings);
+        return view('bookings.index', compact('bookings'));
     }
 
     /*
@@ -157,5 +169,19 @@ class BookingController extends Controller{
         ])->get();
 
         return view('bookings.detail', compact('booking', 'bookingUsers'));
+    }
+
+    public function inviteVerifyGet(){
+        /*
+         * load all booking
+         * WHICH IS pending
+         * may the HOME-PAGE show this
+         *
+         * may let booking index handle this
+         */
+    }
+
+    public function inviteVerifyPost(){
+
     }
 }

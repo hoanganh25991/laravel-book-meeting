@@ -116,7 +116,7 @@
                 })();
             </script>
         </div>
-
+        <script src="{{ url('js/app.js') }}"></script>
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
@@ -128,11 +128,6 @@
         </div>
     </div>
     @yield('out-box')
-    {{--<example></example>--}}
-    {{--<scheduler></scheduler>--}}
-    {{--<script src="{{ url('js/app.js') }}"></script>--}}
-    {{--<script src="{{ url('js/aui-min.js') }}"></script>--}}
-    <script src="{{ url('js/app.js') }}"></script>
     @yield('script_lib')
 </body>
 </html>

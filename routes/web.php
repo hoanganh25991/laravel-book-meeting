@@ -14,6 +14,8 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('booking/{booking}/invite', 'BookingController@inviteTeamMemberGet');
     Route::post('booking/{id}/invite', 'BookingController@inviteTeamMemberPost');
     Route::get('booking/{booking}', 'BookingController@detail');
+    Route::get('booking/verify', 'BookingController@inviteVerifyGet');
+    Route::post('booking/verify', 'BookingController@inviteVerifyPost');
 
     /* GROUP */
     Route::get('group/create', 'GroupController@createGroupGet');
