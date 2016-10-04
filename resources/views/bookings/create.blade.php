@@ -25,13 +25,6 @@
                 <script id="footer-template" type="text/x-kendo-template">
                     Today - #: kendo.toString(data, "d") #
                 </script>
-                <script>
-                    $('#bookingStartDate').kendoDateTimePicker({
-                        format: "yyyy/MM/dd HH:mm",
-                        value: new Date(),
-                        footer: kendo.template($("#footer-template").html())
-                    });
-                </script>
             </div>
             <small class="form-text text-muted">Pick up booking start date</small>
         </div>
@@ -40,14 +33,6 @@
             <div class="input-group">
                 <span class="input-group-addon">End</span>
                 <input id="bookingEndDate" name="booking[end_date]">
-                <script id="footer-template" type="text/x-kendo-template">
-                    Today - #: kendo.toString(data, "d") #
-                </script>
-                <script>
-                    $('#bookingEndDate').kendoDateTimePicker({
-                        footer: kendo.template($("#footer-template").html())
-                    });
-                </script>
             </div>
             <small class="form-text text-muted">Pick up booking end date</small>
         </div>
@@ -63,6 +48,7 @@
             </div>
             <small class="form-text text-muted">Choose the room</small>
         </div>
+
         <div class="form-group">
             <input type="submit" name="submitBooking" value="Create" class="btn btn-info pull-right">
         </div>
@@ -74,6 +60,12 @@
             let endDatePicker = $("#bookingEndDate");
 
             let haveSuggested = false;
+
+            startDatePicker.kendoDateTimePicker({
+                format: "yyyy/MM/dd HH:mm",
+                value: new Date(),
+                footer: kendo.template($("#footer-template").html())
+            });
 
             startDatePicker.on('change', function(){
                 !haveSuggested ? (function(){
