@@ -17,4 +17,8 @@ class Booking extends Model
     public function createdBy(){
         return $this->hasOne(User::class, 'id', 'created_by');
     }
+    
+    public function bookingXUser(){
+        return $this->hasOne(BookingUser::class, 'booking_id', 'id');
+    }
 }

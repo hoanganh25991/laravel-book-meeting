@@ -70,4 +70,8 @@ class User extends Authenticatable
 //    public function scopeAddGroupStatus($query){
 //        return $query->withPivot('status');
 //    }
+//    public function relatedBookings(){}
+    public function verifyBookings(){
+        return $this->hasMany(Booking::class, 'created_by', 'id');
+    }
 }

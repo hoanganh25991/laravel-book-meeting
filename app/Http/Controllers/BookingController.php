@@ -10,6 +10,7 @@ use Auth;
 use App\User;
 use App\Room;
 use BookingX;
+
 class BookingController extends Controller{
     /*
      * At homepage, user need to load ALL booking
@@ -24,15 +25,23 @@ class BookingController extends Controller{
 //        $bookings = $query->get()->map(function ($bookingUser){
 //            return $bookingUser->booking;
 //        });
-        $userA = User::with(['bookings' => function($booking){
-            $booking->withPivot('status');
-        }])->find(Auth::id());
+        $userA = User::with([
+            'bookings' => function ($booking){
+                $booking->withPivot('status')->orderBy('created_at', 'des');
+            },
+//            'verifyBookings' => function($booking){
+//                $booking->with('bookingXUser');
+//            }
+        ])->find(Auth::id());
+
+
         $bookings = $userA->bookings;
 
-        $bookings->each(function($booking){
+        $bookings->each(function ($booking){
             $status = $booking->pivot->status;
-            if($status == 'pending')
+            if($status == 'pending'){
                 $status = 'join';
+            }
             $booking->status = $status;
         });
 //        dd($bookings);
@@ -84,13 +93,16 @@ class BookingController extends Controller{
 //        Storage::$instance['booking'] = $booking;
         Storage::put('booking', $booking);
         $userA = User::with([
-            'groups.users' => function($user){
-                $user->with(['pivotAtBookingX' => function ($pivot){
+            'groups.users' => function ($user){
+                $user->with([
+                    'pivotAtBookingX' => function ($pivot){
 //                    $booking = Storage::$instance['booking'];
-                    $booking = Storage::get('booking');
-                    $pivot->where('booking_id', $booking->id);
-                }])->where('users.id', '!=', Auth::id());
-            }])->find(Auth::id());
+                        $booking = Storage::get('booking');
+                        $pivot->where('booking_id', $booking->id);
+                    }
+                ])->where('users.id', '!=', Auth::id());
+            }
+        ])->find(Auth::id());
 //        dd($userA);
         $groups = $userA->groups;
 //        dd($groups);
@@ -181,7 +193,17 @@ class BookingController extends Controller{
          */
     }
 
-    public function inviteVerifyPost(){
-
+    public function inviteVerifyPost(ApiRequest $req){
+        $booking_id = $req->get('booking_id');
+        $bookingUser = BookingUser::where([
+            ['booking_id', '=', $booking_id],
+            ['user_id',Auth::id()]
+        ])->first();
+        if(empty($bookingUser)){
+            return response('what the fuck you give me?', 402, ['Content-Type' => 'application/json']);
+        }
+        $bookingUser->status = 'joined';
+        $bookingUser->save();
+        return response(['msg'=>'success'], 200,  ['Content-Type' => 'application/json']);
     }
 }
