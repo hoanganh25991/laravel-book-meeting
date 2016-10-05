@@ -14,11 +14,13 @@
             console.log(events);
             if(events.length == 0){
                 console.log('flash now');
-                let html = `<p>Oops, look like you don't have any booking</p>
-                            <p class='small'>
-                                <a onclick="window.location.href += '/create'">create new one</a> or
-                                <a onclick="$('.alert').addClass('animated fadeOutRight');">cancel</a>
-                            </p>`;
+                let html = `<p class='small pull-right' onclick="$('.alert').addClass('animated fadeOutRight');">
+                                <i class='fa fa-times'></i>
+                            </p>
+                            <p>Oops, look like you don't have any booking</p>
+                            <ul class='small'>
+                                <li><a href='{{ url('booking/create') }}'>create new one</a></li>
+                            </ul>`;
                 flash(html, 'important');
             }
             let scheduler;

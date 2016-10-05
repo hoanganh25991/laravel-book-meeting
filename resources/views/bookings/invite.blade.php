@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="panel panel-default">
-        <h1 class="panel-heading">Invite Team Member</h1>
+        <h1 class="panel-heading">Invite team members</h1>
         <div class="panel-body">
             <ul class="list-group">
                 @foreach($groups as $group)
@@ -34,6 +34,18 @@
     </div>
     <script src="{{ url('js/flash.js') }}"></script>
     <script>
+        if(groups_length == 0){
+            console.log('groups_length', 0);
+            let html = `<p class='small pull-right' onclick="$('.alert').addClass('animated fadeOutRight');">
+                            <i class='fa fa-times'></i>
+                        </p>
+                        <p>Oops, look like you haven't joined any group</p>
+                        <ul class='small'>
+                            <li><a href='{{ url('group') }}'>Find your group</a></li>
+                            <li><a href='{{ url('group/create') }}'>create new one</a></li>
+                        </ul>`;
+            flash(html, 'important');
+        }
         $('.usersList').on('click', 'a.my-addon', function(){
             let btn = $(this);
 //            console.log(btn.parent());

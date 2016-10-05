@@ -90,7 +90,7 @@ class BookingController extends Controller{
             //@listener: RegisHostAsMember
             event(new BookingCreated($booking));
 
-            $msg .= 'success';
+            $msg .= "<strong>{$booking->description}</strong> created";
             flash($msg, 'success');
         }catch(\Exception $e){
             $msg .= $e->getMessage();
@@ -149,6 +149,10 @@ class BookingController extends Controller{
         });
 //        dd($groups);
         $booking_id = $booking->id;
+        JavaScript::put([
+            'groups_length' => $groups->count()
+        ]);
+        
         return view('bookings.invite')->with(compact('groups', 'booking_id'));
     }
 
