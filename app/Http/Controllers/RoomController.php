@@ -32,7 +32,7 @@ class RoomController extends Controller
         }
         flash($msg, 'info');
 
-        return redirect('room');
+        return redirect('rooms');
     }
 
     public function index(ApiRequest $req){

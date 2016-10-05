@@ -74,5 +74,11 @@
 //            console.log(roomsJson);
             form.submit();
         });
+        let reloadCheckbox = $('input[name="reload"]');
+        reloadCheckbox.on('click', function(){
+            let isReloaded = $(this).val();
+            if(isReloaded)
+                flash(`You will <strong>TRUNCATE</strong> table rooms, to reload`, 'danger');
+        });
     </script>
 @endsection
