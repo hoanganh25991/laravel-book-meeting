@@ -49,7 +49,7 @@ class RoomController extends Controller
         $end_date = $req->get('end_date');
         Storage::put('start_date', $start_date);
         Storage::put('end_date', $end_date);
-        $rooms = Room::whereDoesntHave('bookingUser', function($bookingUser){
+        $rooms = Room::whereDoesntHave('bookings', function($bookingUser){
             $bookingUser->where([
                 ['start_date', '<', Storage::get('start_date')],
                 ['end_date', '>', Storage::get('start_date')]
@@ -58,7 +58,7 @@ class RoomController extends Controller
                 ['end_date', '>', Storage::get('end_date')]
             ]);
         })->get();
-        dd($rooms);
+//        dd($rooms);
         return response($rooms, 200, ['Content-Type' => 'application/json']);
     }
 }

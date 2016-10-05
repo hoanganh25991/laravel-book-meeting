@@ -10,7 +10,7 @@ class Room extends Model
 
     protected $hidden = ['id'];
     
-    public function bookingUser(){
-        return $this->hasMany(BookingUser::class, 'room_id', 'id');
+    public function bookings(){
+        return $this->hasMany(Booking::class, 'room_id', 'id');
     }
 }
