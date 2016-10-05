@@ -4,13 +4,11 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function(){
     Route::get('home', 'HomeController@index')->name('home');
     /* ROOM */
-    Route::get('fuck', 'Room2Controller@loadGet');
-    Route::get('room/load', 'Room2Controller@loadGet');
-//    Route::get('room/load', 'RoomController@loadGet');
-//    Route::post('room/load', 'RoomController@loadPost');
-//    Route::get('room', 'RoomController@index');
-//    Route::post('room/available', 'RoomController@available');
-//    Route::get('room/available', 'RoomController@available');
+    Route::get('rooms/load', 'RoomController@loadGet');
+    Route::post('rooms/load', 'RoomController@loadPost');
+    Route::get('rooms', 'RoomController@index');
+    Route::post('rooms/available', 'RoomController@available');
+    Route::get('rooms/available', 'RoomController@available');
     /* BOOKING */
     Route::get('booking/create', 'BookingController@createGet');
     Route::post('booking/create', 'BookingController@createPost');
