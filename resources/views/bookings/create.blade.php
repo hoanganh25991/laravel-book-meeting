@@ -1,10 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <link href="http://kendo.cdn.telerik.com/2014.2.716/styles/kendo.common.min.css" rel="stylesheet"/>
+    <link href="{{ url('css/kendo.common.min.css') }}" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/kendo-ui-core/2014.1.416/styles/kendo.bootstrap.min.css" />
-    <script src="http://kendo.cdn.telerik.com/2014.2.716/js/kendo.ui.core.min.js"></script>
-
+    <script src="{{ url('js/kendo.ui.core.min.js') }}"></script>
     <div class="panel panel-default">
         <h1 class="panel-heading">New Booking</h1>
         <div class="panel-body">
