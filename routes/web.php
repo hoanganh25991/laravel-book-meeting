@@ -1,7 +1,7 @@
 <?php
 Route::get('/', function (){return view('welcome');});
 Auth::routes();
-Route::group(['middleware' => 'auth'], function(){
+//Route::group(['middleware' => 'auth'], function(){
     Route::get('home', 'HomeController@index')->name('home');
     /* ROOM */
     Route::get('room/load', 'RoomController@loadGet');
@@ -37,4 +37,4 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('group/verify', 'GroupController@verifyGet');
     Route::post('group/verify', 'GroupController@verifyPost');
     Route::get('group/{group_id}', 'GroupController@detail');
-});
+//});

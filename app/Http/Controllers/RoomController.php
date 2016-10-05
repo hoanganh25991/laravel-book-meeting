@@ -4,25 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ApiRequest;
 use App\Room;
+use DB;
 
 class RoomController extends Controller
 {
-    public function loadGet(ApiRequest $req){
+    public function loadGet(){
         return view('rooms.load');
     }
     
     public function loadPost(ApiRequest $req){
         $rooms = json_decode($req->get('rooms'), true);
-
-        $msg = '';
+        $isReloaded = $req->get('reload');
+        $msg = 'Load room success';
         try{
+//            DB::statement(
+//                "SET FOREIGN_KEY_CHECKS = 0;
+//                SET AUTOCOMMIT = 0;
+//                START TRANSACTION;
+//                TRUNCATE TABLE rooms;
+//                SET FOREIGN_KEY_CHECKS = 1;
+//                COMMIT;
+//                SET AUTOCOMMIT = 1 ;"
+//            );
             DB::table('rooms')->insert($rooms);
-            $msg .= 'success';
         }catch(\Exception $e){
-            $msg .= $e->getMessage();
+            $msg = $e->getMessage();
         }
+        flash($msg, 'info');
 
-        return $msg;
+        return redirect('room');
     }
 
     public function index(ApiRequest $req){
