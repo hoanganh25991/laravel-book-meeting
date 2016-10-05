@@ -9,8 +9,18 @@
             </div>
         </div>
         <script src="{{ url('js/aui-min.js') }}"></script>
+        <script src="{{ url('js/flash.js') }}"></script>
         <script>
             console.log(events);
+            if(events.length == 0){
+                console.log('flash now');
+                let html = `<p>Oops, look like you don't have any booking</p>
+                            <p class='small'>
+                                <a onclick="window.location.href += '/create'">create new one</a> or
+                                <a onclick="$('.alert').addClass('animated fadeOutRight');">cancel</a>
+                            </p>`;
+                flash(html, 'important');
+            }
             let scheduler;
             YUI().use(
                 'aui-scheduler',

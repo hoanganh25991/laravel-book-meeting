@@ -7,6 +7,9 @@ let flash = function(msg, level){
 	flashDiv.html(msg);
 	flashDiv.attr('class', `alert alert-${level}`);
 
+	if(level == 'important')
+		return;
+
 	let interval = setInterval(()=>{
 		flashDiv.addClass(`animated  ${animation}`);
 		clearInterval(interval);
