@@ -11,6 +11,7 @@
         <script src="{{ url('js/aui-min.js') }}"></script>
         <script>
             console.log(events);
+            let scheduler;
             YUI().use(
                 'aui-scheduler',
                 function(Y) {
@@ -20,7 +21,15 @@
                     let weekView = new Y.SchedulerWeekView();
                     let monthView = new Y.SchedulerMonthView();
                     var eventRecorder = new Y.SchedulerEventRecorder();
-
+                    window.eventRecorder = eventRecorder;
+//                    eventRecorder._attrs.headerTemplate.value =
+//                            `<input
+//                                class="scheduler-event-recorder-content form-control"
+//                                disabled
+//                                name="content"
+//                                value="{content}"
+//                            />`;
+//                    eventRecorder.syncUI();
                     let auiEvents = events.map(function(event){
                         let tmp = {};
                         tmp.content = event.description;
@@ -29,9 +38,9 @@
                         return tmp;
                     });
 
-                    window.auiEvents = auiEvents;
+//                    window.auiEvents = auiEvents;
 
-                    let scheduler = new Y.Scheduler(
+                    scheduler = new Y.Scheduler(
                         {
                             activeView: monthView,
                             boundingBox: '#myScheduler',
@@ -43,7 +52,7 @@
                         }
                     );
 
-                    window.scheduler = scheduler;
+//                    window.scheduler = scheduler;
                 }
             );
         </script>
