@@ -43,10 +43,6 @@ Route::group(['middleware' => 'auth'], function(){
     /* SAMPLE */
     Route::get('storage', function(ApiRequest $req){
         $file_name = $req->get('file_name');
-        return response()->download(storage_path($file_name));
-    });
-    Route::post('storage', function(ApiRequest $req){
-        $file_name = $req->get('file_name');
-        return response()->download(storage_path($file_name));
+        return response()->download(public_path($file_name));
     });
 });
