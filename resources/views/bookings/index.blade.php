@@ -61,6 +61,12 @@
                     Y.Do.after(function() {
                         let form = $('#schedulerEventRecorderForm');
 
+                        let contentDiv = form.find('input[name="content"]');
+                        contentDiv.attr('type', 'hidden');
+                        let content = contentDiv.val();
+                        let bookingDesDiv = $(`<span>${content}</span>`);
+                        contentDiv.after(bookingDesDiv);
+
                         let toolbarBtnGroup = Y.one(
                                             `#myScheduler
                                             form.scheduler-event-recorder-form
@@ -94,7 +100,7 @@
                         popoverBtnDetail.on('click', function(e){
                             console.log(e);
                             e._event.stopPropagation();
-                            let content = form.find('input[name="content"]').val();
+
                             let startDate = form.find('input[name="startDate"]').val();
                             let endDate = form.find('input[name="endDate"]').val();
                             let event = auiEvents.filter(function(val){
