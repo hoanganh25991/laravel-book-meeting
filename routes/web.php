@@ -41,7 +41,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('group/{group_id}', 'GroupController@detail');
 
     /* SAMPLE */
-    Route::get('storage', function(ApiRequest $req){
+    Route::get('load-file', function(ApiRequest $req){
         $file_name = $req->get('file_name');
         return response()->download(public_path($file_name));
     });

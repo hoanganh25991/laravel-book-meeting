@@ -39,7 +39,7 @@
         let downloadBtn = $('#download');
         downloadBtn.on('click', function(){
             console.log('click');
-            let url = "{{ url('storage?file_name=rooms.xlsx') }}";
+            let url = "{{ url('load-file?file_name=rooms.xlsx') }}";
             let win = window.open(url, '_blank');
             win.focus();
         });
