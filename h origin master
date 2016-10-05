@@ -1,0 +1,78 @@
+[33md4ac2e0[m fail to custom aui-popover
+[33m243bcdd[m fix today view on booking>index
+[33m2b26ed9[m aui hard-code on boostrap-fonts, add source, may not work on server @@
+[33m7a7a95c[m basic load event to aui-scheduler, Ooops
+[33m4e333a8[m fix bug, load avaible room, wrong lookup table @@
+[33m733d2f9[m rooms unique(name, address, locate)
+[33m07b3c04[m load room UI
+[33m1973723[m room available
+[33m6f1ee93[m askfjlaskdf
+[33m40726e3[m flash message with shadow, fix bug when flashDiv not exist by js
+[33mac64a04[m booking > edit
+[33md14b5ff[m fix bug group.create url
+[33mcfd420c[m booking > delete, using form to explicit redirect by PHP
+[33m7851fb0[m booking > detail, delete UI
+[33m7f2406a[m fix booking>detail css, only apply dt, dd description for >768px
+[33m64d3d42[m add dump-data backup
+[33m9383174[m booking detail ui
+[33m1c34ab1[m booking verify no need to load created_by, accept what's pending, done
+[33m7941aa6[m jquery at 2.2.0 to compliance with others
+[33m52d1281[m invite team member, silly mistake when drop pivot by fisrt
+[33mff8eb0e[m Storage hold my instance, easy to pass through closure-function than use ($val)
+[33m5d70238[m flash.js, improve, allow html
+[33m467af8c[m flash.js, global function to notify sth, group>index msg
+[33m0cfc99f[m group index
+[33m43bb207[m unique on (book,user) but fail
+[33m6b6313f[m group.name is unique
+[33m5a608bb[m booking/x > invite
+[33mf056feb[m load groups & user status
+[33md54a386[m app.blade.php load jquery, other part load jquery, real painful, booking.create shinny
+[33m793943b[m custom default redirect unauthorized with flash-message
+[33m874f5e9[m clean stuff by controller
+[33mf5b9308[m abc
+[33m30486f7[m bookings need end_date
+[33me0526c5[m group closure function into XController
+[33mf48bfc0[m alloy-scheduler
+[33m1b538c5[m move assets/'not-neccessary' out of material-style
+[33mf378ffa[m material-style
+[33m6a370d9[m github style
+[33m4061442[m github-style
+[33m81aa2a3[m restrict ApiRequest on all route
+[33me2806cf[m fix hard-code url & un-secure http
+[33m754d354[m merge
+[33m27dddb2[m merge
+[33m6ca3a63[m ignore github-webhook.log, index.php
+[33m3bfbea8[m add .htaccess to work with server
+[33md1e96fd[m booking/X/invite client 'invited' animation
+[33m02d37f4[m booking/x/invite ui, avatar
+[33m2500d77[m back to js-invite, bcs, ajax-post allow multiple invite rather than wait for reload page
+[33md3699b5[m booking/X/invite, commit before change, replace js post submit by form
+[33m7fda3c4[m booking/X/invite, using form rather than js
+[33me706bb2[m button style, datepicker,..
+[33m571ee89[m style booking>index
+[33mdc1c261[m booking>create beauty, ApiRequest ONLY allow authorized user
+[33m994c80e[m fix booking/X/invite not exist by query where
+[33m41814fc[m bugs report
+[33mb8ae905[m remove larvel crsf-token
+[33m1aeb69d[m flash, animate fadeOutLeft
+[33mf6d3410[m a littl...e bit on booking>create
+[33m991ec5d[m a litle bit on UI ^^, room>index
+[33m801a613[m clear code by comment, hard path: groups filter byUserJoinIn,...
+[33maa87208[m booking > detail page > load booking info + user info
+[33mbdbaed1[m user notInvited filter, success ^^ boops
+[33m1d32933[m try improve invite, filter ONLY whom not in booking_user
+[33m107c76c[m invite success, improve booking-index, ONLY from userA
+[33m6f5674e[m so cool laravel, each, filter, map on array now supported in 'collection'
+[33mff1f443[m group>verify load group>user ONLY pending
+[33md831e33[m user as group-host verify memeber
+[33m210207c[m group_user has (group_id, user_id) unique
+[33m8139d2d[m join group > status, wait for host accept
+[33m961e674[m groups > group_user, DB-transaction
+[33ma3e0900[m group create|index
+[33mbb1f05e[m fetch booking
+[33m697d001[m update user_booking for 'host' user
+[33m920b233[m basic booking work
+[33m5eba9fd[m booking get-post, basic
+[33m486754e[m rooms load from excel file
+[33m58f7334[m commit before change, too tired with new stuff on 5.3
+[33m1808797[m basic init, load2.html, to load rooms_file

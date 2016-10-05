@@ -35,6 +35,8 @@
                         tmp.content = event.description;
                         tmp.startDate = new Date(event.start_date);
                         tmp.endDate = new Date(event.end_date);
+                        tmp.color = event.color;
+                        tmp.id = event.id;
                         return tmp;
                     });
 
@@ -53,8 +55,77 @@
                     );
 
 //                    window.scheduler = scheduler;
+                    let popoverBtnCancel;
+                    let popoverBtnDetail;
+
+                    Y.Do.after(function() {
+                        let form = $('#schedulerEventRecorderForm');
+
+                        let toolbarBtnGroup = Y.one(
+                                            `#myScheduler
+                                            form.scheduler-event-recorder-form
+                                            div.popover-footer
+                                            div.btn-group`
+                                        );
+                        window.toolbarBtnGroup = toolbarBtnGroup;
+                        window.x = $(toolbarBtnGroup._node);
+//                        x.removeClass('btn-group');
+                        x.addClass('pull-right');
+//                        console.log(x);
+                        x.html(`
+                            <button class="btn btn-default btn-sm" id="popoverBtnDetail">Detail</button>
+                            <button class="btn btn-default btn-sm" id="popoverBtnCancel">Cancel</button>
+                        `);
+
+                        popoverBtnCancel = new Y.Button({
+                            label: 'Cancel',
+                            srcNode: '#popoverBtnCancel',
+                        }).render();
+
+                        popoverBtnCancel.on('click', function() {
+                            eventRecorder.hidePopover();
+                        });
+
+                        popoverBtnDetail = new Y.Button({
+                            label: 'Detail',
+                            srcNode: '#popoverBtnDetail',
+                        }).render();
+
+                        popoverBtnDetail.on('click', function(e){
+                            console.log(e);
+                            e._event.stopPropagation();
+                            let content = form.find('input[name="content"]').val();
+                            let startDate = form.find('input[name="startDate"]').val();
+                            let endDate = form.find('input[name="endDate"]').val();
+                            let event = auiEvents.filter(function(val){
+//                                return (val.content == content && val.startDate == startDate && val.endDate == endDate);
+                                return (val.content == content)
+                                        &&(val.startDate.getTime() == startDate)
+                                        &&(val.endDate.getTime() == endDate)
+                                        ;
+                            });
+                            console.log(event[0]);
+                            let bookingId = event[0].id;
+                            console.log(`booking id: ${bookingId}`);
+                            window.location.href += `/${bookingId}`;
+                        });
+                    }, eventRecorder, 'showPopover');
+
+                    Y.Do.after(function() {
+                        // Make sure that the editButton is destroyed to avoid a memory leak.
+                        if (popoverBtnCancel)
+                            popoverBtnCancel.destroy();
+
+                        if(popoverBtnDetail)
+                            popoverBtnDetail.destroy();
+
+                    }, eventRecorder, 'hidePopover');
                 }
             );
+//            setInterval(function(){
+//                $('div.scheduler-event-title').css('color', '#fff');
+//                $('div.scheduler-event-content').css('color', '#fff');
+//            }, 1000);
         </script>
     </div>
     <div class="panel panel-default">

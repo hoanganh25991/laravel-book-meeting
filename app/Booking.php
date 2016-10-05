@@ -8,7 +8,7 @@ class Booking extends Model
 {
     protected $guarded = ['id'];
 
-    protected $hidden = ['id', 'pivot'];
+//    protected $hidden = ['id', 'pivot'];
 
     public static function boot(){
         parent::boot();

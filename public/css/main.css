@@ -87,21 +87,37 @@ div.yui3-widget-ft.popover-footer{
     background-color: #f7f7f7;
 }
 
-div.yui3-widget-ft.popover-footer button:nth-child(1){
-    display: none;
-}
+/*div.yui3-widget-ft.popover-footer button:nth-child(1){*/
+    /*display: none;*/
+/*}*/
 
-div.yui3-widget-ft.popover-footer button:nth-child(2){
-    margin-left: 350%;
-    padding: 1px 5px;
-    font-size: 12px;
-    line-height: 1.5;
-}
+/*div.yui3-widget-ft.popover-footer button:nth-child(2){*/
+    /*margin-left: 350%;*/
+    /*padding: 1px 5px;*/
+    /*font-size: 12px;*/
+    /*line-height: 1.5;*/
+/*}*/
 
-div.yui3-widget-ft.popover-footer button:nth-child(3){
-    display: none;
-}
+/*div.yui3-widget-ft.popover-footer button:nth-child(3){*/
+    /*display: none;*/
+/*}*/
 
 button.scheduler-base-today{
     line-height: 1.0;
 }
+
+/*div.scheduler-event scheduler-event-past{*/
+    /*color: #fff;*/
+    /*background-color: #8eb4cb;*/
+    /*border-color: #7da8c3;*/
+/*}*/
+
+/*div.scheduler-event scheduler-event-past:hover{*/
+    /*color: #fff;*/
+    /*background-color: #6b9dbb;*/
+    /*border-color: #538db0;*/
+/*}*/
+
+/*div.scheduler-event scheduler-event-past{*/
+    /*color: #fff;*/
+/*}*/

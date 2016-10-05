@@ -59,6 +59,13 @@ class BookingController extends Controller{
 //            $events->append($booking);
 //        });
 //        dd($events->getArrayCopy());
+        //color on booking HOSTED by userA
+        $joinedBookings->each(function($booking){
+            $color = '#909B9E';
+            if($booking->created_by == Auth::id())
+                $color = '#A2B86C';
+            $booking->color = $color;
+        });
         JavaScript::put([
             'events' => $joinedBookings->values()
         ]);
