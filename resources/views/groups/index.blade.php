@@ -1,33 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Groups</h1>
-    <small>enjoy or <a href="{{ url('group/create') }}">create new</a></small>
-    <hr>
-    <ul id="groupList">
-    @foreach($groups as $group)
-        <li>{{ $group->name }}
-            <div class="form-group">
-                <div class="input-group">
-                    <pre class="input-group">{{ $group }}</pre>
-                    <a group-id="{{ $group->id }}"
-                       group-name="{{ $group->name }}"
-                    <?php
-                        $attr = "class='my-addon btn btn-info'";
-//                        if($group->user_status == 'join'){
-//                            $attr .= "disabled";
-//                        }
-                        echo $attr;
-                    ?>>{{ $group->user_status }}</a>
-                </div>
+    <div class="panel panel-default">
+        <h1 class="panel-heading">Groups</h1>
+        <div class="panel-body">
+            <div class="bg-warning">
+                <p>fasdkj askfj askldfj as dflkajsd f lkfj </p>
+                <ul class="small">
+                    <li>Find your group</li>
+                    <li><a href="{{ url('group/create') }}">Create new one</a></li>
+                </ul>
             </div>
-        </li>
-    @endforeach
-    </ul>
+
+            <div id="groupList">
+                @foreach($groups as $group)
+                    <div>
+                        <div class="zero-clipboard">
+                        <span group-id="{{ $group->id }}"
+                              group-name="{{ $group->name }}"
+                              class="btn-clipboard btn-info"
+                        >{{ $group->user_status }}</span>
+                        </div>
+                        <figure class="highlight">
+                            <h4>{{ $group->name }}</h4>
+                            <p>{{ $group }}</p>
+                        </figure>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
     <script src="{{ url('js/flash.js') }}"></script>
     <script>
         $(document).ready(function(){
-            $('#groupList').on('click', 'a.my-addon', function(){
+            $('#groupList').on('click', 'span.btn-clipboard', function(){
                 let btn = $(this);
                 let status = btn.text();
                 console.log(status);
