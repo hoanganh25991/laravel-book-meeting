@@ -9,7 +9,7 @@ use App\Booking;
 use Auth;
 use App\User;
 use App\Room;
-use BookingX;
+use JavaScript;
 
 class BookingController extends Controller{
     /*
@@ -44,8 +44,26 @@ class BookingController extends Controller{
             }
             $booking->status = $status;
         });
-//        dd($bookings);
-        return view('bookings.index', compact('bookings'));
+        
+        $joinedBookings = $bookings->filter(function($booking){
+            return ($booking->status == 'joined');
+        });
+        
+        $verifyBookings = $bookings->filter(function($booking){
+            return ($booking->status == 'join');
+        });
+
+//        $events = new \ArrayObject([]);
+//
+//        $joinedBookings->each(function($booking)use($events){
+//            $events->append($booking);
+//        });
+//        dd($events->getArrayCopy());
+        JavaScript::put([
+            'events' => $joinedBookings->values()
+        ]);
+
+        return view('bookings.index', compact('bookings', 'joinedBookings', 'verifyBookings'));
     }
 
     /*

@@ -182,6 +182,7 @@ return [
          * Custom load
          */
         Laracasts\Flash\FlashServiceProvider::class,
+        Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
 
     ],
 
