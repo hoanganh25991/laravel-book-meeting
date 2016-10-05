@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ApiRequest;
+use App\Room;
 
 class RoomController extends Controller
 {
@@ -31,5 +32,23 @@ class RoomController extends Controller
         $rooms = Room::all();
 
         return view('rooms.index', compact('rooms'));
+    }
+
+    public function available(ApiRequest $req){
+        $start_date = $req->get('start_date');
+        $end_date = $req->get('end_date');
+        Storage::put('start_date', $start_date);
+        Storage::put('end_date', $end_date);
+        $rooms = Room::whereDoesntHave('bookingUser', function($bookingUser){
+            $bookingUser->where([
+                ['start_date', '<', Storage::get('start_date')],
+                ['end_date', '>', Storage::get('start_date')]
+            ])->orWhere([
+                ['start_date', '<', Storage::get('end_date')],
+                ['end_date', '>', Storage::get('end_date')]
+            ]);
+        })->get();
+        dd($rooms);
+        return response($rooms, 200, ['Content-Type' => 'application/json']);
     }
 }

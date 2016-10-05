@@ -7,6 +7,8 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('room/load', 'RoomController@loadGet');
     Route::post('room/load', 'RoomController@loadPost');
     Route::get('room', 'RoomController@index');
+    Route::post('room/available', 'RoomController@available');
+    Route::get('room/available', 'RoomController@available');
     /* BOOKING */
     Route::get('booking/create', 'BookingController@createGet');
     Route::post('booking/create', 'BookingController@createPost');
