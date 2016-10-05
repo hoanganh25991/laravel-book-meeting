@@ -1,32 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
-    <ul class="list-group">
-    @foreach($groups as $group)
-        <li class="list-group-item">
-            <h4><strong>{{ $group->name }}</strong>-group</h4>
-            {{--user list--}}
-            <div class="col-md-offset-1 usersList">
-                @foreach($group->users as $user)
-                    <div class="form-group">
-                        <div class="input-group">
+    <div class="panel panel-default">
+        <h1 class="panel-heading">Verify memeber</h1>
+        <div class="panel-body">
+            @if($groups->count() == 0)
+                <div class="bg-info">
+                    <p>Look like you haven't create any group, try <a href="{{ url('group/create') }}">on</a></p>
+                </div>
+            @endif
+            <ul class="list-group">
+                @foreach($groups as $group)
+                    <li class="list-group-item">
+                        <h4><strong>{{ $group->name }}</strong>-group</h4>
+                        {{--user list--}}
+                        <div class="col-md-offset-1 usersList">
+                            @foreach($group->users as $user)
+                                <div class="form-group">
+                                    <div class="input-group">
                             <span class="avatar-addon">
                                 <img src="{{ url('images/new-user-image-default.png') }}" alt="avatar" class="avatar img-thumbnail">
                             </span>
-                            <p class="form-control">{{ $user->name }}</p>
-                            <a user-id="{{ $user->id }}"
-                               user-name="{{ $user->name }}"
-                               group-id="{{ $group->id }}"
-                               group-name="{{ $group->name }}"
-                               class="my-addon btn btn-info"
-                            >{{ $user->group_status }}</a>
+                                        <p class="form-control">{{ $user->name }}</p>
+                                        <a user-id="{{ $user->id }}"
+                                           user-name="{{ $user->name }}"
+                                           group-id="{{ $group->id }}"
+                                           group-name="{{ $group->name }}"
+                                           class="my-addon btn btn-info"
+                                        >{{ $user->group_status }}</a>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                    </div>
+                    </li>
                 @endforeach
-            </div>
-        </li>
-    @endforeach
-    </ul>
+            </ul>
+        </div>
+    </div>
     <script src="{{ url('js/flash.js') }}"></script>
     <script>
         $('.usersList').on('click', 'a.my-addon', function(){

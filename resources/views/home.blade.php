@@ -20,8 +20,12 @@
 
                         <div class="col-md-8">
                             <div class="panel-body">
+                                <p class="bg-info">Booking</p>
                                 <p><a href="{{ url('booking') }}">Review Your Bookings</a></p>
-                                <p><a href="{{ url('group') }}">Review Your Group</a></p>
+                                <hr>
+                                <p class="bg-info">Group</p>
+                                <p><a href="{{ url('group') }}">Find a group</a></p>
+                                <p><a href="{{ url('group/verify') }}">Verify memeber</a></p>
                             </div>
                         </div>
                     </div>

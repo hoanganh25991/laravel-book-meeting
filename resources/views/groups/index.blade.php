@@ -5,7 +5,7 @@
         <h1 class="panel-heading">Groups</h1>
         <div class="panel-body">
             <div class="bg-warning">
-                <p>fasdkj askfj askldfj as dflkajsd f lkfj </p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                 <ul class="small">
                     <li>Find your group</li>
                     <li><a href="{{ url('group/create') }}">Create new one</a></li>

@@ -16,6 +16,11 @@
             <div class="panel panel-default">
                 <h1 class="panel-heading">Invited Users</h1>
                 <div class="panel-body">
+                    @if($booking->created_by == Auth::id())
+                        <div class="bg-info">
+                            <p><a href='{{ url("booking/{$booking->id}/invite") }}'>Invite team members</a></p>
+                        </div>
+                    @endif
                     @foreach($users as $user)
                         <div class="form-group">
                             <div class="input-group usersList">
