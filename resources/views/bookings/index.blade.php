@@ -19,6 +19,7 @@
                     let dayView = new Y.SchedulerDayView();
                     let weekView = new Y.SchedulerWeekView();
                     let monthView = new Y.SchedulerMonthView();
+                    var eventRecorder = new Y.SchedulerEventRecorder();
 
                     let auiEvents = events.map(function(event){
                         let tmp = {};
@@ -32,11 +33,12 @@
 
                     let scheduler = new Y.Scheduler(
                         {
-                            activeView: weekView,
+                            activeView: monthView,
                             boundingBox: '#myScheduler',
                             date: new Date(),
                             items: auiEvents,
                             render: true,
+                            eventRecorder: eventRecorder,
                             views: [dayView, weekView, monthView, agendaView]
                         }
                     );
@@ -60,6 +62,8 @@
                                 <a class="my-addon btn btn-info"
                                    booking-id="{{ $booking->id }}"
                                    booking-description="{{ $booking->description }}"
+                                   booking-start_date="{{ $booking->start_date }}"
+                                   booking-end_date="{{ $booking->end_date }}"
                                 >{{ $booking->status }}</a>
                             </div>
                         </div>
@@ -75,6 +79,8 @@
                 let btn = $(this);
                 let booking_id = btn.attr('booking-id');
                 let booking_desscription = btn.attr('booking-description');
+                let booking_start_date = btn.attr('booking-start_date');
+                let booking_end_date = btn.attr('booking-end_date');
                 let status = btn.text();
                 if(status == 'joined'){
                     flash(`You have joined <strong>${booking_desscription}</strong>`);
@@ -89,6 +95,18 @@
                         console.log(res);
                         flash(`Joined into <strong>${booking_desscription}</strong>`);
                         btn.text('joined');
+                        let btnParent = btn.parent();
+                        btnParent.remove();
+                        let event = {
+                            content: booking_desscription,
+                            startDate: new Date(booking_start_date),
+                            endDate: new Date(booking_end_date)
+                        };
+
+//                        scheduler._events._items.push(event);
+                        scheduler.addEvents(event);
+                        scheduler.syncEventsUI();
+//                        scheduler.syncUI();
                     },
                     error: function(res){
                         console.log(res);

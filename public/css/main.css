@@ -83,3 +83,7 @@ pre{
     margin-left: calc(20% + 20px);
     }
 }
+
+div.yui3-widget-ft.popover-footer{
+    display: none;
+}
