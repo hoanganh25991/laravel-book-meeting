@@ -83,7 +83,25 @@ pre{
     margin-left: calc(20% + 20px);
     }
 }
-
 div.yui3-widget-ft.popover-footer{
+    background-color: #f7f7f7;
+}
+
+div.yui3-widget-ft.popover-footer button:nth-child(1){
     display: none;
+}
+
+div.yui3-widget-ft.popover-footer button:nth-child(2){
+    margin-left: 350%;
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+div.yui3-widget-ft.popover-footer button:nth-child(3){
+    display: none;
+}
+
+button.scheduler-base-today{
+    line-height: 1.0;
 }

@@ -1,34 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="text-center">Invite Team Member</h1>
-    <hr>
-    <ul class="list-group">
-        @foreach($groups as $group)
-            <li class="list-group-item">
-                <h4><strong>{{ $group->name }}</strong>-group</h4>
-                <div class="col-md-offset-1">
-                    @foreach($group->users as $user)
-                        <div class="form-group">
-                            <div class="input-group usersList">
-                                {{--<span class="input-group-addon">--}}
-                                <span class="avatar-addon">
-                                {{--<i class="fa fa-user" aria-hidden="true"></i>--}}
-                                    <img src="{{ url('images/new-user-image-default.png') }}" alt="avatar" class="avatar img-thumbnail">
-                            </span>
-                                <a href='{{ url("user/{$user->id}") }}' class="form-control">{{ $user->name }}</a>
-                                <a user-name="{{ $user->name }}"
-                                   user-id="{{ $user->id }}"
-                                   booking-id="{{ $booking_id }}"
-                                   class="my-addon btn btn-info "
-                                >{{ $user->booking_status }}</a>
-                            </div>
+    <div class="panel panel-default">
+        <h1 class="panel-heading">Invite Team Member</h1>
+        <div class="panel-body">
+            <ul class="list-group">
+                @foreach($groups as $group)
+                    <li class="list-group-item">
+                        <h4><strong>{{ $group->name }}</strong>-group</h4>
+                        <div class="col-md-offset-1">
+                            @foreach($group->users as $user)
+                                <div class="form-group">
+                                    <div class="input-group usersList">
+                                        <span class="avatar-addon">
+                                            <img src="{{ url('images/new-user-image-default.png') }}"
+                                                 alt="avatar"
+                                                 class="avatar img-thumbnail">
+                                        </span>
+                                        <a href='{{ url("user/{$user->id}") }}' class="form-control">{{ $user->name }}</a>
+                                        <a user-name="{{ $user->name }}"
+                                           user-id="{{ $user->id }}"
+                                           booking-id="{{ $booking_id }}"
+                                           class="my-addon btn btn-info "
+                                        >{{ $user->booking_status }}</a>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                    @endforeach
-                </div>
-            </li>
-        @endforeach
-    </ul>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
     <script src="{{ url('js/flash.js') }}"></script>
     <script>
         $('.usersList').on('click', 'a.my-addon', function(){

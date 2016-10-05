@@ -95,8 +95,11 @@
                         console.log(res);
                         flash(`Joined into <strong>${booking_desscription}</strong>`);
                         btn.text('joined');
-                        let btnParent = btn.parent();
+                        //find out whole btn info ask JOIN, then remove
+                        let btnParent = btn.parents('li');
                         btnParent.remove();
+
+                        //add them BACK to scheduler
                         let event = {
                             content: booking_desscription,
                             startDate: new Date(booking_start_date),
