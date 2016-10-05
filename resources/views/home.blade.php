@@ -19,14 +19,14 @@
                         </div>
 
                         <div class="col-md-8">
-                            <div class="panel-body">
-                                <p class="bg-info">Booking</p>
-                                <p><a href="{{ url('booking') }}">Review Your Bookings</a></p>
-                                <hr>
-                                <p class="bg-info">Group</p>
-                                <p><a href="{{ url('group') }}">Find a group</a></p>
-                                <p><a href="{{ url('group/verify') }}">Verify memeber</a></p>
-                            </div>
+                            <p class="bg-info">Booking</p>
+                            <p><a href="{{ url('booking') }}">Review Your Bookings</a></p>
+                            <p class="bg-info">Group</p>
+                            <p><a href="{{ url('group') }}">Find a group</a></p>
+                            <p><a href="{{ url('group/verify') }}">Verify memeber</a></p>
+                            <p class="bg-info">Room</p>
+                            <p><a href="{{ url('rooms') }}">Room list</a></p>
+                            <p><a href="{{ url('rooms/load') }}">Load rooms</a></p>
                         </div>
                     </div>
                 </div>
