@@ -26,10 +26,24 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.min.js"></script>
     <script src="{{ url('js/flash.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
     <script>
         /**
          * Created by hoanganh25991 on 29/09/16.
          */
+        let html = `<p><a id='download'>Download<a> sample <strong>excel-file</strong></p>`;
+        let flashDiv = $('.alert');
+        flashDiv.html(html);
+        flashDiv.attr('class', 'alert alert-info');
+
+        let downloadBtn = $('#download');
+        downloadBtn.on('click', function(){
+            console.log('click');
+            let url = "{{ url('storage?file_name=rooms.xlsx') }}";
+            let win = window.open(url, '_blank');
+            win.focus();
+        });
+
         let rooms_file = $('input[name="rooms_file"]');
 
         let roomsInput = $('input[name="rooms"]');
@@ -76,8 +90,7 @@
         });
         let reloadCheckbox = $('input[name="reload"]');
         reloadCheckbox.on('click', function(){
-            let isReloaded = $(this).val();
-            if(isReloaded)
+            if(reloadCheckbox.is(':checked'))
                 flash(`You will <strong>TRUNCATE</strong> table rooms, to reload`, 'danger');
         });
     </script>

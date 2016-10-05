@@ -1,4 +1,6 @@
 <?php
+use App\Http\Requests\ApiRequest;
+
 Route::get('', function (){return view('welcome');});
 Auth::routes();
 Route::group(['middleware' => 'auth'], function(){
@@ -37,4 +39,14 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('group/verify', 'GroupController@verifyGet');
     Route::post('group/verify', 'GroupController@verifyPost');
     Route::get('group/{group_id}', 'GroupController@detail');
+
+    /* SAMPLE */
+    Route::get('storage', function(ApiRequest $req){
+        $file_name = $req->get('file_name');
+        return response()->download(storage_path($file_name));
+    });
+    Route::post('storage', function(ApiRequest $req){
+        $file_name = $req->get('file_name');
+        return response()->download(storage_path($file_name));
+    });
 });
