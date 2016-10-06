@@ -31,13 +31,14 @@
         /**
          * Created by hoanganh25991 on 29/09/16.
          */
-        let html = `<p><a id='download'>Download<a> sample <strong>excel-file</strong></p>`;
+        let html = '<p><a href="#download" id="download">Download<a> sample <strong>excel-file</strong></p>';
         let flashDiv = $('.alert');
         flashDiv.html(html);
         flashDiv.attr('class', 'alert alert-info');
 
         let downloadBtn = $('#download');
-        downloadBtn.on('click', function(){
+        downloadBtn.on('click', function(e){
+            e.preventDefault();
             console.log('click');
             let url = "{{ url('load-file?file_name=rooms.xlsx') }}";
             let win = window.open(url, '_blank');
